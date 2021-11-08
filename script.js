@@ -96,16 +96,20 @@ class ExtensionMenu extends ExtensionElement{
     onRender(){
         let tabOptions = document.querySelectorAll('.tab-option')
         let tabs = document.querySelectorAll('.tab')
+        let n = Math.min(tabOptions.length, tabs.length)
+        console.log(tabOptions, tabs, n);
         
-        for(let i = 0; i < tabOptions.length; i++) {
+        for(let i = 0; i < n; i++) {
             let tabOption = tabOptions[i]
             let tab = tabs[i]
             
             tabOption.onclick = (e)=>{
-                for(let j = 0; j < tabs.length; j++){
-                    tab[j].classList.add('hidden')
+                for(let j = 0; j < n; j++){
+                    tabs[j].classList.add('hidden')
+                    tabOptions[j].classList.remove('active-tab')
                 }
-                tab[i].classList.remove('hidden')
+                tabOptions[i].classList.add('active-tab')
+                tabs[i].classList.remove('hidden')
             }
         }
     }
@@ -115,6 +119,7 @@ let banCounter = new BanCounter('#center')
 banCounter.id = 'ytbl-bancounter'
 banCounter.type = 'span'
 
+
 let menu = new ExtensionMenu('#end')
 menu.type = 'aside'
 menu.id = 'ytbl-menu'
@@ -122,13 +127,15 @@ menu.className = 'ytbl'
 menu.innerHTML = `
 <main class="tabs-wrapper">
     <div class="tabs-options">
-        <button class="tab-option" id="tab-option-1">blacklist</button>
-        <button class="tab-option" id="tab-option-2">watched</button>
+        <button class="tab-option active-tab" id="tab-option-1">BlackList</button>
+        <button class="tab-option" id="tab-option-2">Remove Watched</button>
+        <button class="tab-option" id="tab-option-3">Max Suggestions</button>
     </div>
     
     <div id="tabs-content">
         <div class="tab" id="tab-1"></div>
-        <div class="tab" id="tab-2"></div>
+        <div class="tab hidden" id="tab-2"></div>
+        <div class="tab hidden" id="tab-3"></div>
     </div>
 </main>
 

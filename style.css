@@ -10,6 +10,10 @@
     display: none;
 }
 
+.active-tab{
+    background-color: #555 !important;
+}
+
 #ytbl-bancounter{
     color: #aaa;
     font-size: 12px;
@@ -19,7 +23,7 @@
     background-color: #0000;
     backdrop-filter: blur(25px) brightness(0.25);
     
-    width: 25vw;
+    min-width: 25vw;
     height: 75vh;
     
     position: fixed;
@@ -46,30 +50,30 @@
 .tabs-options{
     display: flex;
     flex-direction: row;
-    position: absolute;
+    /* position: absolute; */
+    justify-content: space-around;
     flex-wrap: nowrap;
-    bottom: 0;
-    transform: translateY(100%);
+    /* top: 50%; */
+    /* left: 0; */
+    /* transform: translate(-50%, -50%) rotate(90deg) translateY(50%); */
     width: 100%;
 }
 
 .tabs-options button{
-    background-color: #111;
+    box-sizing: border-box;
+    background: none;
     color: white;
     font-size: 12px;
     cursor: pointer;
-}
-
-
-.tab-option{
-    border-radius: 0 0 10px 10px;
-    padding: 10px;
-    
-    width: 100%;
-    height: auto;
     outline: none;
-    border: 1px solid #aaaa;
+    border: none;
+    border-radius: 0 0 10px 10px;
+    padding: 10px 20px;
+    
+    border: 2px solid #aaaa;
+    border-top: none;   
 }
+
 
 
 
