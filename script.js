@@ -77,6 +77,8 @@ class ExtensionElement {
 class BanCounter extends ExtensionElement{
     first(){
         this.banCnt = -1
+        this.id = 'ytbl-bancounter'
+        this.type = 'span'
     }
     
     set banCnt(val){
@@ -92,19 +94,52 @@ class BanCounter extends ExtensionElement{
     }
 }
 
-class ExtensionMenu extends ExtensionElement{
+class ExtensionLogo extends ExtensionElement {
+    first(){
+        this.type = 'img'
+        this.className = 'ytbl-logo'
+    }
+    
     onRender(){
-        let logo = document.createElement('img')
-        this.parentNode.insertBefore(logo, this.nextSibling)
-        logo.ext = this
-        logo.classList.add('ytbl-logo')
-        logo.src = chrome.extension.getURL("icons/ChortOutline.svg")
+        this.DOM.src = chrome.extension.getURL("icons/ChortOutline.svg")
         
+        this.DOM.onclick = ()=>{
+            let menu = document.querySelector('#ytbl-menu')
+            if(menu){
+                menu.classList.toggle('hidden')
+            }
+        }
+    }
+}
+
+class ExtensionMenu extends ExtensionElement{
+    first(){
+        this.type = 'aside'
+        this.id = 'ytbl-menu'
+        this.className = 'ytbl'
+        this.innerHTML = `
+        <main class="tabs-wrapper">
+            <div class="tabs-options">
+                <button class="tab-option active-tab" id="tab-option-1">Black List</button>
+                <button class="tab-option" id="tab-option-2">Remove Watched</button>
+                <button class="tab-option" id="tab-option-3">Max Suggestions</button>
+            </div>
+            
+            <div id="tabs-content">
+                <div class="tab" id="tab-1"></div>
+                <div class="tab hidden" id="tab-2"></div>
+                <div class="tab hidden" id="tab-3"></div>
+            </div>
+        </main>
+        `
+    }
+    
+    onRender(){
+        this.DOM.classList.toggle('hidden')
         
         let tabOptions = document.querySelectorAll('.tab-option')
         let tabs = document.querySelectorAll('.tab')
         let n = Math.min(tabOptions.length, tabs.length)
-        console.log(tabOptions, tabs, n);
         
         for(let i = 0; i < n; i++) {
             let tabOption = tabOptions[i]
@@ -122,39 +157,24 @@ class ExtensionMenu extends ExtensionElement{
     }
 }
 
-let banCounter = new BanCounter('#center')
-banCounter.id = 'ytbl-bancounter'
-banCounter.type = 'span'
-
-
-let menu = new ExtensionMenu('#end')
-menu.type = 'aside'
-menu.id = 'ytbl-menu'
-menu.className = 'ytbl'
-menu.innerHTML = `
-<main class="tabs-wrapper">
-    <div class="tabs-options">
-        <button class="tab-option active-tab" id="tab-option-1">BlackList</button>
-        <button class="tab-option" id="tab-option-2">Remove Watched</button>
-        <button class="tab-option" id="tab-option-3">Max Suggestions</button>
-    </div>
+class BanButton extends ExtensionElement {
+    first(){
+        this.type = 'button'
+        this.id = 'ban-button'
+        this.innerHTML = `Hide Channel`
+    }
     
-    <div id="tabs-content">
-        <div class="tab" id="tab-1"></div>
-        <div class="tab hidden" id="tab-2"></div>
-        <div class="tab hidden" id="tab-3"></div>
-    </div>
-</main>
+    onRender(){
+        this.DOM.onclick = (e)=>{
+            // ...
+        }
+    }
+}
 
-`
-
-
-
-
-
-
-
-
+let banCounter = new BanCounter('#center')
+let logo = new ExtensionLogo('#buttons > ytd-button-renderer')
+let menu = new ExtensionMenu('#end')
+let banButton = new BanButton('#subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button')
 
 
 
