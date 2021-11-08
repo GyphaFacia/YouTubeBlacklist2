@@ -195,9 +195,11 @@ class ExtensionElement {
     
     first(){}
     onRender(){}
+    clean(){}
     
     waitToRender(){
         if(this.isRendered()){
+            this.catchRemoval()
             return false
         }
         else{
@@ -216,8 +218,25 @@ class ExtensionElement {
         }
     }
     
+    catchRemoval(){
+        // if(this.constructor.name.includes('BanButton')){
+        //     console.log(this.DOM, this.DOM.parentNode);
+        // }
+        
+        if(!this.isRendered()){
+            console.log(this.constructor.name, 'was removed');
+            this.clean()
+            this.waitToRender()
+        }
+        else{
+            setTimeout(()=>{
+                this.catchRemoval()
+            }, 255)
+        }
+    }
+    
     isRendered(){
-        return this.DOM ? true : false
+        return this.DOM && this.DOM.parentNode
     }
     
     render(){
@@ -234,7 +253,7 @@ class ExtensionElement {
     }
 }
 
-class BanCounter extends ExtensionElement{
+class BanCounter extends ExtensionElement{    
     first(){
         this.banCnt = -1
         this.id = 'ytbl-bancounter'
@@ -254,7 +273,7 @@ class BanCounter extends ExtensionElement{
     }
 }
 
-class ExtensionLogo extends ExtensionElement {
+class ExtensionLogo extends ExtensionElement {    
     first(){
         this.type = 'img'
         this.className = 'ytbl-logo'
@@ -272,7 +291,7 @@ class ExtensionLogo extends ExtensionElement {
     }
 }
 
-class ExtensionMenu extends ExtensionElement{
+class ExtensionMenu extends ExtensionElement{    
     first(){
         this.type = 'aside'
         this.id = 'ytbl-menu'
@@ -317,15 +336,27 @@ class ExtensionMenu extends ExtensionElement{
     }
 }
 
-class BanButton extends ExtensionElement {
+class BanButton extends ExtensionElement {    
     first(){
         this.type = 'button'
         this.id = 'ban-button'
         this.innerHTML = `Hide Channel`
     }
     
+    isRendered(){
+        return this.DOM && this.DOM.parentNode
+    }
+    
+    getChannelLink(){
+        let result = document.querySelector('ytd-video-owner-renderer #text > a')
+        if(!result){return ''}
+        return result.href
+    }
+    
     getChannelName(){
-        return document.querySelector('ytd-video-owner-renderer #text > a').innerText
+        let result = document.querySelector('ytd-video-owner-renderer #text > a')
+        if(!result){return ''}
+        return result.innerText
     }
     
     getIsBanned(){
@@ -343,26 +374,29 @@ class BanButton extends ExtensionElement {
             console.log(this.getChannelName(), this.getIsBanned());
             console.log(banlist);
             if(this.getIsBanned()){
-                banlist.unbanChannel(this.channelName)
+                banlist.unbanChannel(this.getChannelName())
             }
             else{
-                banlist.banChannel(this.channelName)
+                banlist.banChannel(this.getChannelName(), this.getChannelLink())
             }
-            console.log(banlist);
-            
+                
+            setTimeout(()=>{
+                this.updateButtonText()
+            }, 100);
         }
     }
 }
 
+// let selectors = ['#ban-button', '#ytbl-menu', '.ytbl-logo', '#ytbl-bancounter']
 let banCounter = new BanCounter('#center')
 let logo = new ExtensionLogo('#buttons > ytd-button-renderer')
 let menu = new ExtensionMenu('#end')
 let banButton = new BanButton('#subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button')
 
-
 let removedVideos = new VideosSet()
 let banlist = new ChannelBlacklist()
-// banlist.add
+
+let lastLocation = window.location.href
 
 setInterval(()=>{
 	for(let vid of parseAllVideos()){
@@ -372,6 +406,15 @@ setInterval(()=>{
 			removedVideos.add(vid)
 		}
 	}
+    
+    if(removedVideos.updated){
+        removedVideos.updated = false
+        banCounter.banCnt = removedVideos.content.length
+    }
+    
+    if(window.location.href != lastLocation){
+        lastLocation = window.location.href
+    }
 }, 255)
 
 
