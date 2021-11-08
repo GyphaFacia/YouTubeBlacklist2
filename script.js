@@ -94,6 +94,13 @@ class BanCounter extends ExtensionElement{
 
 class ExtensionMenu extends ExtensionElement{
     onRender(){
+        let logo = document.createElement('img')
+        this.parentNode.insertBefore(logo, this.nextSibling)
+        logo.ext = this
+        logo.classList.add('ytbl-logo')
+        logo.src = chrome.extension.getURL("icons/ChortOutline.svg")
+        
+        
         let tabOptions = document.querySelectorAll('.tab-option')
         let tabs = document.querySelectorAll('.tab')
         let n = Math.min(tabOptions.length, tabs.length)
