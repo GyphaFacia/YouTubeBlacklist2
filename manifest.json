@@ -1,0 +1,30 @@
+{
+	"name" : "YouTube Blacklist",
+	"description" : "Remove unacceptable channels from your search list",
+	"version" : "1.0",
+	"manifest_version": 2,
+	"icons" : {
+		"128": "icons/ico128.png",
+		"48": "icons/ico48.png",
+		"16": "icons/ico16.png"
+	},
+
+	"permissions": [
+		"storage",
+		"tabs", 
+		"<all_urls>"
+	],
+	
+	"content_scripts":[
+		{
+			"matches" : ["https://www.youtube.com/*", "https://www.google.com/*", "https://stackoverflow.com/*"],
+			"js": ["script.js"],
+			"run_at" : "document_end"
+		},
+		{
+			"matches" : ["https://www.youtube.com/*", "https://www.google.com/*", "https://stackoverflow.com/*"],
+			"css": ["style.css"]
+		}
+	]
+
+}
