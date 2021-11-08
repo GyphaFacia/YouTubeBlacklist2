@@ -7,7 +7,6 @@ class ExtensionElement {
         this.__id = ''
         this.__className = ''
         this.__innerHTML = ''
-        this.__onclick = null
         
         this.DOM = null
         
@@ -15,14 +14,6 @@ class ExtensionElement {
         
         setTimeout(()=>{ this.waitToRender() }, 0)
     }
-    
-    set onclick(val){
-        this.__onclick = val
-        if(this.DOM){
-            this.DOM.onclick = this.onclick
-        }
-    }
-    get onclick(){return this.__onclick}
     
     set innerHTML(val){
         this.__innerHTML = val
@@ -78,7 +69,6 @@ class ExtensionElement {
         if(this.id){ this.DOM.id = this.id }
         if(this.className){ this.DOM.className = this.className }
         if(this.innerHTML){ this.DOM.innerHTML = this.innerHTML }
-        if(this.onclick){this.DOM.onclick = this.onclick.bind(this)}
         
         this.onRender()
     }
@@ -102,11 +92,47 @@ class BanCounter extends ExtensionElement{
     }
 }
 
-let test = new BanCounter('#center')
-test.onclick = function(e){
-    this.banCnt++
+class ExtensionMenu extends ExtensionElement{
+    onRender(){
+        let tabOptions = document.querySelectorAll('.tab-option')
+        let tabs = document.querySelectorAll('.tab')
+        
+        for(let i = 0; i < tabOptions.length; i++) {
+            let tabOption = tabOptions[i]
+            let tab = tabs[i]
+            
+            tabOption.onclick = (e)=>{
+                for(let j = 0; j < tabs.length; j++){
+                    tab[j].classList.add('hidden')
+                }
+                tab[i].classList.remove('hidden')
+            }
+        }
+    }
 }
 
+let banCounter = new BanCounter('#center')
+banCounter.id = 'ytbl-bancounter'
+banCounter.type = 'span'
+
+let menu = new ExtensionMenu('#end')
+menu.type = 'aside'
+menu.id = 'ytbl-menu'
+menu.className = 'ytbl'
+menu.innerHTML = `
+<main class="tabs-wrapper">
+    <div class="tabs-options">
+        <button class="tab-option" id="tab-option-1">blacklist</button>
+        <button class="tab-option" id="tab-option-2">watched</button>
+    </div>
+    
+    <div id="tabs-content">
+        <div class="tab" id="tab-1"></div>
+        <div class="tab" id="tab-2"></div>
+    </div>
+</main>
+
+`
 
 
 
