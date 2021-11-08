@@ -1,0 +1,14 @@
+.ytbl{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+}
+
+.ytbl-popup-main, .ytbl-popup-header, .ytbl-popup-footer{
+    width: 500px;
+    padding: 10px;
+    background-color: black;
+}
