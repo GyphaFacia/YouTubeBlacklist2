@@ -185,7 +185,6 @@ class ExtensionElement {
     
     first(){}
     onRender(){}
-    clean(){}
     
     waitToRender(){
         if(this.isRendered()){
@@ -329,9 +328,10 @@ class BanButton extends ExtensionElement {
         
         setInterval(()=>{
             this.updateButtonText()
+			console.log(this.DOM);
         }, 500)
     }
-    
+		
     isRendered(){
         return this.DOM && this.DOM.parentNode
     }
