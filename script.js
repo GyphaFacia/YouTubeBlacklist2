@@ -185,8 +185,6 @@ class ExtensionElement {
     
     first(){}
     onRender(){}
-	onRemoved(){}
-	extraRenderConditions(){return true}
     
     waitToRender(){
         if(this.isRendered()){
@@ -212,7 +210,6 @@ class ExtensionElement {
     catchRemoval(){
         if(!this.isRendered()){
             this.waitToRender()
-			this.onRemoved()
         }
         else{
             setTimeout(()=>{
@@ -222,7 +219,7 @@ class ExtensionElement {
     }
     
     isRendered(){
-        return this.DOM && this.DOM.parentNode && this.extraRenderConditions()
+        return this.DOM && this.DOM.parentNode
     }
     
     render(){
@@ -329,20 +326,10 @@ class BanButton extends ExtensionElement {
         this.innerHTML = `Hide Channel`
         
         setInterval(()=>{
-            // this.updateButtonText()
-			// console.log(this.DOM, this.DOM.getBoundingClientRect().width);
+			this.updateButtonText()
         }, 500)
     }
 	
-	extraRenderConditions(){ return this.DOM.getBoundingClientRect().width }
-	onRemoved(){
-		
-	}
-		
-    isRendered(){
-        return this.DOM && this.DOM.parentNode
-    }
-    
     getChannelLink(){
         let result = document.querySelector('ytd-video-owner-renderer #text > a')
         return result ? result.href : ''
@@ -383,12 +370,10 @@ class BanButton extends ExtensionElement {
 let banCounter = new BanCounter('#center')
 let logo = new ExtensionLogo('#buttons > ytd-button-renderer')
 let menu = new ExtensionMenu('#end')
-let banButton = new BanButton('#subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button')
+let banButton = new BanButton('#top-row #subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button')
 
 let removedVideos = new VideosSet()
 let banlist = new ChannelBlacklist()
-
-let lastLocation = window.location.href
 
 setInterval(()=>{
 	for(let vid of parseAllVideos()){
@@ -402,10 +387,6 @@ setInterval(()=>{
     if(removedVideos.updated){
         removedVideos.updated = false
         banCounter.banCnt = removedVideos.content.length
-    }
-    
-    if(window.location.href != lastLocation){
-        lastLocation = window.location.href
     }
 }, 255)
 
