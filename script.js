@@ -107,16 +107,6 @@ class VideosSet {
 		}
 		return false
 	}
-	
-	log(){
-		if(!this.updated){return false}
-		
-		console.clear()
-		for(let vid of this.content){
-			console.log(vid.videoTitle, vid)
-		}
-		this.updated = false
-	}
 }
 
 function parseAllVideos(){
@@ -219,12 +209,7 @@ class ExtensionElement {
     }
     
     catchRemoval(){
-        // if(this.constructor.name.includes('BanButton')){
-        //     console.log(this.DOM, this.DOM.parentNode);
-        // }
-        
         if(!this.isRendered()){
-            console.log(this.constructor.name, 'was removed');
             this.clean()
             this.waitToRender()
         }
@@ -341,6 +326,10 @@ class BanButton extends ExtensionElement {
         this.type = 'button'
         this.id = 'ban-button'
         this.innerHTML = `Hide Channel`
+        
+        setInterval(()=>{
+            this.updateButtonText()
+        }, 500)
     }
     
     isRendered(){
@@ -349,14 +338,12 @@ class BanButton extends ExtensionElement {
     
     getChannelLink(){
         let result = document.querySelector('ytd-video-owner-renderer #text > a')
-        if(!result){return ''}
-        return result.href
+        return result ? result.href : ''
     }
     
     getChannelName(){
         let result = document.querySelector('ytd-video-owner-renderer #text > a')
-        if(!result){return ''}
-        return result.innerText
+        return result ? result.innerText : ''
     }
     
     getIsBanned(){
@@ -371,7 +358,6 @@ class BanButton extends ExtensionElement {
         this.updateButtonText()
         
         this.DOM.onclick = (e)=>{
-            console.log(this.getChannelName(), this.getIsBanned());
             console.log(banlist);
             if(this.getIsBanned()){
                 banlist.unbanChannel(this.getChannelName())
@@ -387,7 +373,6 @@ class BanButton extends ExtensionElement {
     }
 }
 
-// let selectors = ['#ban-button', '#ytbl-menu', '.ytbl-logo', '#ytbl-bancounter']
 let banCounter = new BanCounter('#center')
 let logo = new ExtensionLogo('#buttons > ytd-button-renderer')
 let menu = new ExtensionMenu('#end')
