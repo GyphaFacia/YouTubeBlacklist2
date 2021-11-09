@@ -185,6 +185,8 @@ class ExtensionElement {
     
     first(){}
     onRender(){}
+	onRemoved(){}
+	extraRenderConditions(){return true}
     
     waitToRender(){
         if(this.isRendered()){
@@ -209,8 +211,8 @@ class ExtensionElement {
     
     catchRemoval(){
         if(!this.isRendered()){
-            this.clean()
             this.waitToRender()
+			this.onRemoved()
         }
         else{
             setTimeout(()=>{
@@ -220,7 +222,7 @@ class ExtensionElement {
     }
     
     isRendered(){
-        return this.DOM && this.DOM.parentNode
+        return this.DOM && this.DOM.parentNode && this.extraRenderConditions()
     }
     
     render(){
@@ -327,10 +329,15 @@ class BanButton extends ExtensionElement {
         this.innerHTML = `Hide Channel`
         
         setInterval(()=>{
-            this.updateButtonText()
-			console.log(this.DOM);
+            // this.updateButtonText()
+			// console.log(this.DOM, this.DOM.getBoundingClientRect().width);
         }, 500)
     }
+	
+	extraRenderConditions(){ return this.DOM.getBoundingClientRect().width }
+	onRemoved(){
+		
+	}
 		
     isRendered(){
         return this.DOM && this.DOM.parentNode
