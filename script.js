@@ -279,7 +279,10 @@ class ExtensionMenu extends ExtensionElement{
         this.type = 'aside'
         this.id = 'ytbl-menu'
         this.className = 'ytbl'
-        this.innerHTML = `
+    }
+	
+	updateMenu(){
+		this.innerHTML = `
         <main class="tabs-wrapper">
             <div class="tabs-options">
                 <button class="tab-option active-tab" id="tab-option-1">Black List</button>
@@ -288,13 +291,28 @@ class ExtensionMenu extends ExtensionElement{
             </div>
             
             <div id="tabs-content">
-                <div class="tab" id="tab-1"></div>
+                <div class="tab" id="tab-1">
+					${this.getBlacklistTab()}
+				</div>
                 <div class="tab hidden" id="tab-2"></div>
                 <div class="tab hidden" id="tab-3"></div>
             </div>
         </main>
         `
-    }
+	}
+	
+	getBlacklistTab(){
+		let code = ``
+		for(let channelName in banlist.content){
+			code += 
+			`
+			<div class="blacklist-item">
+				<span>${channelName}</span>
+				<button class="unhide-button">UnHide</button>
+			</div>
+			`
+		}
+	}
     
     onRender(){
         this.DOM.classList.toggle('hidden')
