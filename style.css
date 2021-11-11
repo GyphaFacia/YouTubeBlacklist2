@@ -75,6 +75,11 @@
     
     /* border: 1px solid #aaaa; */
     /* border-top: none;    */
+    transition-duration: 255ms;
+}
+
+.tabs-options button:hover{
+    background-color: #303030;
 }
 
 .ytbl-logo{

@@ -107,16 +107,6 @@ class VideosSet {
 		}
 		return false
 	}
-	
-	log(){
-		if(!this.updated){return false}
-		
-		console.clear()
-		for(let vid of this.content){
-			console.log(vid.videoTitle, vid)
-		}
-		this.updated = false
-	}
 }
 
 function parseAllVideos(){
@@ -195,7 +185,6 @@ class ExtensionElement {
     
     first(){}
     onRender(){}
-    clean(){}
     
     waitToRender(){
         if(this.isRendered()){
@@ -219,13 +208,7 @@ class ExtensionElement {
     }
     
     catchRemoval(){
-        // if(this.constructor.name.includes('BanButton')){
-        //     console.log(this.DOM, this.DOM.parentNode);
-        // }
-        
         if(!this.isRendered()){
-            console.log(this.constructor.name, 'was removed');
-            this.clean()
             this.waitToRender()
         }
         else{
@@ -296,7 +279,10 @@ class ExtensionMenu extends ExtensionElement{
         this.type = 'aside'
         this.id = 'ytbl-menu'
         this.className = 'ytbl'
-        this.innerHTML = `
+    }
+	
+	updateMenu(){
+		this.innerHTML = `
         <main class="tabs-wrapper">
             <div class="tabs-options">
                 <button class="tab-option active-tab" id="tab-option-1">Black List</button>
@@ -305,13 +291,28 @@ class ExtensionMenu extends ExtensionElement{
             </div>
             
             <div id="tabs-content">
-                <div class="tab" id="tab-1"></div>
+                <div class="tab" id="tab-1">
+					${this.getBlacklistTab()}
+				</div>
                 <div class="tab hidden" id="tab-2"></div>
                 <div class="tab hidden" id="tab-3"></div>
             </div>
         </main>
         `
-    }
+	}
+	
+	getBlacklistTab(){
+		let code = ``
+		for(let channelName in banlist.content){
+			code += 
+			`
+			<div class="blacklist-item">
+				<span>${channelName}</span>
+				<button class="unhide-button">UnHide</button>
+			</div>
+			`
+		}
+	}
     
     onRender(){
         this.DOM.classList.toggle('hidden')
@@ -341,22 +342,20 @@ class BanButton extends ExtensionElement {
         this.type = 'button'
         this.id = 'ban-button'
         this.innerHTML = `Hide Channel`
+        
+        setInterval(()=>{
+			this.updateButtonText()
+        }, 500)
     }
-    
-    isRendered(){
-        return this.DOM && this.DOM.parentNode
-    }
-    
+	
     getChannelLink(){
         let result = document.querySelector('ytd-video-owner-renderer #text > a')
-        if(!result){return ''}
-        return result.href
+        return result ? result.href : ''
     }
     
     getChannelName(){
         let result = document.querySelector('ytd-video-owner-renderer #text > a')
-        if(!result){return ''}
-        return result.innerText
+        return result ? result.innerText : ''
     }
     
     getIsBanned(){
@@ -371,7 +370,6 @@ class BanButton extends ExtensionElement {
         this.updateButtonText()
         
         this.DOM.onclick = (e)=>{
-            console.log(this.getChannelName(), this.getIsBanned());
             console.log(banlist);
             if(this.getIsBanned()){
                 banlist.unbanChannel(this.getChannelName())
@@ -387,16 +385,13 @@ class BanButton extends ExtensionElement {
     }
 }
 
-// let selectors = ['#ban-button', '#ytbl-menu', '.ytbl-logo', '#ytbl-bancounter']
 let banCounter = new BanCounter('#center')
 let logo = new ExtensionLogo('#buttons > ytd-button-renderer')
 let menu = new ExtensionMenu('#end')
-let banButton = new BanButton('#subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button')
+let banButton = new BanButton('#top-row #subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button')
 
 let removedVideos = new VideosSet()
 let banlist = new ChannelBlacklist()
-
-let lastLocation = window.location.href
 
 setInterval(()=>{
 	for(let vid of parseAllVideos()){
@@ -410,10 +405,6 @@ setInterval(()=>{
     if(removedVideos.updated){
         removedVideos.updated = false
         banCounter.banCnt = removedVideos.content.length
-    }
-    
-    if(window.location.href != lastLocation){
-        lastLocation = window.location.href
     }
 }, 255)
 
