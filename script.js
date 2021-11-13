@@ -4,6 +4,7 @@ class ExtensionElement{
 		this.tag = 'div'
 		this.className = this.id = this.innerHTML = ''
 		this.alive = false
+		this.thinkDelay = 350
 		
 		this.first()
 		// this.waitToRender()
@@ -62,21 +63,6 @@ class ExtensionElement{
 	}
 	
 	// 
-	waitToRender(){
-		if(this.isRendered()){return true}
-		
-		this.render()
-		
-		if(!this.isRendered()){
-			setTimeout(()=>{
-				this.waitToRender()
-			}, 100)
-		}
-		else{
-			this.onRender()
-		}
-	}
-	
 	think(){
 		if(this.isRendered() != this.alive){
 			this.alive = this.isRendered()
@@ -95,23 +81,31 @@ class ExtensionElement{
 		this.onThink()
 		setTimeout(()=>{
 			this.think()
-		}, 100);
+		}, this.thinkDelay);
 	}
 	
 	render(){
-		let next = document.querySelector('#center')
-		let root = next.parentNode
+		this.next = document.querySelector('#center')
+		this.root = this.next.parentNode
 		
-		if(!next || !root){return false}
+		if(!this.next || !this.root){return false}
 		
 		this.DOM = document.createElement(this.tag)
 		this.DOM.ext = this
-		root.insertBefore(this.DOM, next)
+		this.root.insertBefore(this.DOM, this.next)
 		this.updateDOM()
 		return true
 	}
 	
-	isRendered(){return this.DOM ? true : false}	
+	isRendered(){
+		if(!this.DOM){return false}
+		if(!this.root){return false}
+		if(!this.next){return false}
+		if(!document.body.contains(this.DOM)){return false}
+		if(!document.body.contains(this.root)){return false}
+		if(!document.body.contains(this.next)){return false}
+		return true	
+	}
 }
 
 class BanCounter extends ExtensionElement{
@@ -133,14 +127,14 @@ class BanCounter extends ExtensionElement{
 	}
 	
 	render(){
-		let next = document.querySelector('#center')
-		let root = next.parentNode
+		this.next = document.querySelector('#center')
+		this.root = this.next.parentNode
 		
-		if(!next || !root){return false}
+		if(!this.next || !this.root){return false}
 		
 		this.DOM = document.createElement(this.tag)
 		this.DOM.ext = this
-		root.insertBefore(this.DOM, next)
+		this.root.insertBefore(this.DOM, this.next)
 		this.updateDOM()
 		return true
 	}
@@ -161,14 +155,14 @@ class ExtensionLogo extends ExtensionElement{
 	}
 	
 	render(){
-		let next = document.querySelector('#buttons > ytd-button-renderer')
-		let root = next.parentNode
-		
-		if(!next || !root){return false}
+		this.next = document.querySelector('#buttons > ytd-button-renderer')
+		if(!this.next){return false}
+		this.root = this.next.parentNode
+		if(!this.root){return false}
 		
 		this.DOM = document.createElement(this.tag)
 		this.DOM.ext = this
-		root.insertBefore(this.DOM, next)
+		this.root.insertBefore(this.DOM, this.next)
 		this.updateDOM()
 		return true
 	}
