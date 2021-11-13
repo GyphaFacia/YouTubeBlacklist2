@@ -7,7 +7,6 @@ class ExtensionElement{
 		this.thinkDelay = 350
 		
 		this.first()
-		// this.waitToRender()
 		this.think()
 		this.second()
 	}
@@ -86,9 +85,9 @@ class ExtensionElement{
 	
 	render(){
 		this.next = document.querySelector('#center')
+		if(!this.next){return false}
 		this.root = this.next.parentNode
-		
-		if(!this.next || !this.root){return false}
+		if(!this.root){return false}
 		
 		this.DOM = document.createElement(this.tag)
 		this.DOM.ext = this
@@ -128,9 +127,9 @@ class BanCounter extends ExtensionElement{
 	
 	render(){
 		this.next = document.querySelector('#center')
+		if(!this.next){return false}
 		this.root = this.next.parentNode
-		
-		if(!this.next || !this.root){return false}
+		if(!this.root){return false}
 		
 		this.DOM = document.createElement(this.tag)
 		this.DOM.ext = this
@@ -144,10 +143,6 @@ class ExtensionLogo extends ExtensionElement{
 	first(){
 		this.tag = 'img'
 		this.className = 'ytbl-extension-logo'
-	}
-	
-	onRemove(){
-		console.log('logo lost');
 	}
 	
 	onRender(){
