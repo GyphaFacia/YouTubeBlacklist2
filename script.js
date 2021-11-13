@@ -98,6 +98,7 @@ class BanCounter extends ExtensionElement{
 	
 	first(){
 		this.cnt = 0
+		this.className = 'ytbl-extension-bancounter'
 	}
 	
 	onRender(){
@@ -120,10 +121,37 @@ class BanCounter extends ExtensionElement{
 	}
 }
 
+class ExtensionLogo extends ExtensionElement{
+	first(){
+		this.tag = 'img'
+		this.className = 'ytbl-extension-logo'
+	}
+	
+	onRender(){
+		this.DOM.src = chrome.extension.getURL("icons/ChortOutline.svg")
+	}
+	
+	render(){
+		let next = document.querySelector('#buttons > ytd-button-renderer')
+		let root = next.parentNode
+		
+		if(!next || !root){return false}
+		
+		this.DOM = document.createElement(this.tag)
+		this.DOM.ext = this
+		root.insertBefore(this.DOM, next)
+		this.updateDOM()
+		return true
+	}
+}
+
 let banCounter = new BanCounter()
+let logo = new ExtensionLogo()
 
-
-
+// let banCounter = new BanCounter('#center')
+// let logo = new ExtensionLogo('#buttons > ytd-button-renderer')
+// let menu = new ExtensionMenu('#end')
+// let banButton = new BanButton('#top-row #subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button')
 
 
 
