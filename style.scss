@@ -10,6 +10,8 @@ $clr-panel: #212121;
 $clr-border: #4b4b4b;
 $clr-hover: #4b4b4b;
 
+$clr-button: #2c2c2c;
+
 $clr-text-bright: #eee;
 $clr-text-fade: #aaa;
 
@@ -46,6 +48,24 @@ $clr-text-fade: #aaa;
         border: 1px solid $clr-border;
         border-top: none;
         border-radius: 0 0 0 5px;
+    }
+    
+    &-banbutton{
+        background: $clr-button;
+        background-color: #303030;
+        color: $clr-text-fade;
+        margin-right: 3px;
+        padding: 1px 15px;
+        font-family: Roboto, Noto, sans-serif;
+        font-size: 14px;
+        font-weight: 500; 
+        outline: none;
+        border: none;
+        border-radius: 2px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        font-stretch: 100%;
+        cursor: pointer;
     }
 }
 

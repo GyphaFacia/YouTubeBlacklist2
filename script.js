@@ -1,6 +1,7 @@
 let banCounter = new BanCounter()
 let menu = new ExtensionMenu()
 let logo = new ExtensionLogo()
+let banbutton = new BanButton()
 
 let removedVideos = new VideosSet()
 let banlist = new ChannelBlacklist()

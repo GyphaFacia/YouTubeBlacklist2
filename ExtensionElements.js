@@ -163,3 +163,35 @@ class ExtensionMenu extends ExtensionElement{
 		}
 	}
 }
+
+class BanButton extends ExtensionElement {
+    getNextSiblingSelector(){
+        return '#top-row #subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button'
+    }
+    first(){
+        this.tag = 'button'
+        this.className = 'ytbl-extension-banbutton'
+        this.innerHTML = 'BANBUTTON'
+    }
+    
+    onThink(){
+        
+    }
+    
+    onRender(){
+        
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
