@@ -68,6 +68,9 @@ class ExtensionElement{
 				this.waitToRender()
 			}, 100)
 		}
+		else{
+			this.onRender()
+		}
 	}
 	
 	render(){
@@ -86,11 +89,38 @@ class ExtensionElement{
 	isRendered(){return this.DOM ? true : false}	
 }
 
-let e = new ExtensionElement()
-e.innerHTML = 'test'
-e.className = 'test-class'
+class BanCounter extends ExtensionElement{
+	get cnt(){return this.__cnt}
+	set cnt(val){
+		this.__cnt = val
+		this.innerHTML = `Removed ${this.cnt} videos`
+	}
+	
+	first(){
+		this.cnt = 0
+	}
+	
+	onRender(){
+		this.DOM.onclick = (e)=>{
+			this.cnt++
+		}
+	}
+	
+	render(){
+		let next = document.querySelector('#center')
+		let root = next.parentNode
+		
+		if(!next || !root){return false}
+		
+		this.DOM = document.createElement(this.tag)
+		this.DOM.ext = this
+		root.insertBefore(this.DOM, next)
+		this.updateDOM()
+		return true
+	}
+}
 
-
+let banCounter = new BanCounter()
 
 
 

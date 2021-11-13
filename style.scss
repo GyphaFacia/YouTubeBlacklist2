@@ -2,7 +2,10 @@ $clr-default: #333;
 $clr-darker: #000;
 $clr-text: #eee;
 
+$clr-text: #eee;
+$clr-text-fade: #aaaa;
+
 .test{
-    font-size: 14px;
-    color: $clr-text;
+    font-size: 11px;
+    color: $clr-text-fade;
 }
