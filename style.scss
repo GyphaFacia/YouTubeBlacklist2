@@ -1,9 +1,18 @@
-$clr-default: #333;
-$clr-darker: #000;
-$clr-text: #eee;
+// 111111
+// 1a1a1a
+// 353535
+// ffffff
+// 4b4b4b
+// 212121
 
-$clr-text: #eee;
-$clr-text-fade: #aaaa;
+$clr-background: #111;
+$clr-panel: #212121;
+$clr-border: #4b4b4b;
+$clr-hover: #4b4b4b;
+
+$clr-text-bright: #eee;
+$clr-text-fade: #aaa;
+
 
 .ytbl-extension{
     &-bancounter{
@@ -26,4 +35,23 @@ $clr-text-fade: #aaaa;
             filter: invert(1) drop-shadow(0 0 3px white);
         }
     }
+    
+    &-menu{
+        background-color: $clr-panel;
+        min-width: 25vw;
+        min-height: 66vh;
+        position: absolute;
+        right: 0;
+        top: 58px;
+        border: 1px solid $clr-border;
+        border-top: none;
+        border-radius: 0 0 0 5px;
+        // opacity: 0.98;
+    }
 }
+
+.hidden{
+    display: none;
+}
+
+

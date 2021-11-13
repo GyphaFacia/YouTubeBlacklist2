@@ -4,7 +4,7 @@ class ExtensionElement{
 		this.tag = 'div'
 		this.className = this.id = this.innerHTML = ''
 		this.alive = false
-		this.thinkDelay = 350
+		this.thinkDelay = 200
 		
 		this.first()
 		this.think()
@@ -83,8 +83,10 @@ class ExtensionElement{
 		}, this.thinkDelay);
 	}
 	
+	getNextSiblingSelector(){return '#center'}
+	
 	render(){
-		this.next = document.querySelector('#center')
+		this.next = document.querySelector(this.getNextSiblingSelector())
 		if(!this.next){return false}
 		this.root = this.next.parentNode
 		if(!this.root){return false}
@@ -108,6 +110,7 @@ class ExtensionElement{
 }
 
 class BanCounter extends ExtensionElement{
+	getNextSiblingSelector(){return '#center'}
 	get cnt(){return this.__cnt}
 	set cnt(val){
 		this.__cnt = val
@@ -125,21 +128,10 @@ class BanCounter extends ExtensionElement{
 		}
 	}
 	
-	render(){
-		this.next = document.querySelector('#center')
-		if(!this.next){return false}
-		this.root = this.next.parentNode
-		if(!this.root){return false}
-		
-		this.DOM = document.createElement(this.tag)
-		this.DOM.ext = this
-		this.root.insertBefore(this.DOM, this.next)
-		this.updateDOM()
-		return true
-	}
 }
 
 class ExtensionLogo extends ExtensionElement{
+	getNextSiblingSelector(){return '#container #buttons > ytd-button-renderer'}
 	first(){
 		this.tag = 'img'
 		this.className = 'ytbl-extension-logo'
@@ -147,23 +139,33 @@ class ExtensionLogo extends ExtensionElement{
 	
 	onRender(){
 		this.DOM.src = chrome.extension.getURL("icons/ChortOutline.svg")
+		this.DOM.onclick = ()=>{
+			console.log(menu);
+			if(menu && menu.isRendered()){
+				menu.DOM.classList.toggle('hidden')
+			}
+		}
 	}
 	
-	render(){
-		this.next = document.querySelector('#buttons > ytd-button-renderer')
-		if(!this.next){return false}
-		this.root = this.next.parentNode
-		if(!this.root){return false}
-		
-		this.DOM = document.createElement(this.tag)
-		this.DOM.ext = this
-		this.root.insertBefore(this.DOM, this.next)
-		this.updateDOM()
-		return true
+}
+
+class ExtensionMenu extends ExtensionElement{
+	getNextSiblingSelector(){return '#container #buttons > ytd-button-renderer'}
+	first(){
+		this.tag = 'aside'
+		this.className = 'ytbl-extension-menu'
+	}
+	
+	onRender(){
+		if(window.location.href.includes('/watch')){
+			// page with video player has no header border for some reason
+			this.DOM.style.top = '56px' 
+		}
 	}
 }
 
 let banCounter = new BanCounter()
+let menu = new ExtensionMenu()
 let logo = new ExtensionLogo()
 
 // let banCounter = new BanCounter('#center')
