@@ -5,7 +5,25 @@ $clr-text: #eee;
 $clr-text: #eee;
 $clr-text-fade: #aaaa;
 
-.test{
-    font-size: 11px;
-    color: $clr-text-fade;
+.ytbl-extension{
+    &-bancounter{
+        font-size: 11px;
+        color: $clr-text-fade;   
+    }
+    
+    &-logo{
+        cursor: pointer;
+        object-fit: contain;
+        height: 22px;
+        margin-right: 8px;
+        padding: 8px;
+        transition-duration: 225ms;
+        filter: invert(1);
+        transform: translateY(2px);
+        
+        &:hover{
+            transform: translateY(1px) scale(1.25);
+            filter: invert(1) drop-shadow(0 0 3px white);
+        }
+    }
 }
