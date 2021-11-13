@@ -33,7 +33,7 @@
 		},
 		{
 			"matches" : ["https://www.youtube.com/*", "https://www.google.com/*", "https://stackoverflow.com/*"],
-			"css": ["style.css"]
+			"css": ["style.min.css"]
 		}
 	]
 
