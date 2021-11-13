@@ -3,9 +3,11 @@ class ExtensionElement{
 		this.DOM = null
 		this.tag = 'div'
 		this.className = this.id = this.innerHTML = ''
+		this.alive = false
 		
 		this.first()
-		this.waitToRender()
+		// this.waitToRender()
+		this.think()
 		this.second()
 	}
 	
@@ -13,7 +15,9 @@ class ExtensionElement{
 	first(){}
 	second(){}
 	onRender(){}
+	onRemove(){}
 	onUpdate(){}
+	onThink(){}
 	
 	// getters setters
 	get className(){return this.__className}
@@ -73,6 +77,27 @@ class ExtensionElement{
 		}
 	}
 	
+	think(){
+		if(this.isRendered() != this.alive){
+			this.alive = this.isRendered()
+			
+			if(this.alive){
+				this.onRender()
+			}
+			else{
+				this.onRemove()
+			}
+		}
+		else if (!this.isRendered()) {
+			this.render()
+		}
+		
+		this.onThink()
+		setTimeout(()=>{
+			this.think()
+		}, 100);
+	}
+	
 	render(){
 		let next = document.querySelector('#center')
 		let root = next.parentNode
@@ -125,6 +150,10 @@ class ExtensionLogo extends ExtensionElement{
 	first(){
 		this.tag = 'img'
 		this.className = 'ytbl-extension-logo'
+	}
+	
+	onRemove(){
+		console.log('logo lost');
 	}
 	
 	onRender(){
