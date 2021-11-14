@@ -151,9 +151,13 @@ class BanButton extends ExtensionElement {
         this.className = 'ytbl-extension-banbutton'
         this.innerHTML = 'BANBUTTON'
     }
+	
+	getChannelInfoSelector(){
+		return '#top-row #channel-name #container #text > a'
+	}
     
     getCurrentChannel(){
-        let channelElt = document.querySelector('#channel-name #container #text > a')
+        let channelElt = document.querySelector(this.getChannelInfoSelector())
         if(!channelElt){return ''}
         
         let channelName = channelElt.innerText
@@ -161,7 +165,7 @@ class BanButton extends ExtensionElement {
     }
 	
 	getCurrentChannelLink(){
-		let channelElt = document.querySelector('#channel-name #container #text > a')
+		let channelElt = document.querySelector(this.getChannelInfoSelector())
         if(!channelElt){return ''}
         
         let channelLink = channelElt.href
@@ -208,35 +212,7 @@ class ExtensionMenu extends ExtensionElement{
 		this.updateMenu()
 	}
 	
-	getBlacklistTab(){
-		let code = ''
-		for(let channel in banlist.content){
-			code += `
-			<span class="banned-channel">
-		        <a class="banned-channel__name" href="${banlist.content[channel]}">${channel}</a>
-		        <div class="banned-channel__button">UnHide Channel</div>
-		    </span>
-			`
-		}
-		return code
-	}
-	
-	updateMenu(){
-		this.innerHTML = `
-		<div class="menu-switchers">
-			<div class="menu-switchers__switcher active">Black List</div>
-			<div class="menu-switchers__switcher">Watched Videos</div>
-			<div class="menu-switchers__switcher">Suggestions Limit</div>
-		</div>
-		
-		<div class="menu-tabs">
-            <div class="menu-tabs__tab">${this.getBlacklistTab()}</div>
-            <div class="menu-tabs__tab hidden"></div>
-            <div class="menu-tabs__tab hidden"></div>
-        </div>
-		`
-		
-		// hook tabs
+	hookTabSwitchers(){
 		let switchers = document.querySelectorAll('.menu-switchers__switcher')
 		let tabs = document.querySelectorAll('.menu-tabs__tab')
 		
@@ -252,14 +228,56 @@ class ExtensionMenu extends ExtensionElement{
 				tabs[i].classList.remove('hidden')
 			}
 		}
-		
-		// Blacklist tab: hook unhide buttons
+	}
+	
+	getTabBlacklistCode(){
+		let code = ''
+		for(let channel in banlist.content){
+			code += `
+			<span class="banned-channel">
+		        <a class="banned-channel__name" href="${banlist.content[channel]}">${channel}</a>
+		        <div class="banned-channel__button">UnHide Channel</div>
+		    </span>
+			`
+		}
+		return code
+	}
+	
+	hookTabBlacklist(){
 		for(let button of document.querySelectorAll('.banned-channel__button')){
 			button.onclick = ()=>{
 				banlist.unbanChannel(button.parentNode.children[0].innerText)
 				this.updateMenu()
 			}
 		}
+	}
+	
+	getTabSettingsCode(){
+		
+	}
+	
+	hookTabSettings(){
+		
+	}
+	
+	updateMenu(){
+		this.innerHTML = `
+		<div class="menu-switchers">
+			<div class="menu-switchers__switcher active">Black List</div>
+			<div class="menu-switchers__switcher">Settings</div>
+			<div class="menu-switchers__switcher">About</div>
+		</div>
+		
+		<div class="menu-tabs">
+            <div class="menu-tabs__tab">${this.getTabBlacklistCode()}</div>
+            <div class="menu-tabs__tab hidden">${this.getTabSettingsCode()}</div>
+            <div class="menu-tabs__tab hidden"></div>
+        </div>
+		`
+		
+		// hook tabs
+		this.hookTabSwitchers()		
+		this.hookTabBlacklist()
 	}
 	
 	onThink(){
