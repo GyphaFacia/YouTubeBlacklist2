@@ -20,15 +20,10 @@
 		"icons/*.png"
 	],
 	
-	"browser_action": {
-		"default_icon": "icons/ico128.png",
-		"default_popup": "popup.html"
-	},
-	
 	"content_scripts":[
 		{
 			"matches" : ["https://www.youtube.com/*", "https://www.google.com/*", "https://stackoverflow.com/*"],
-			"js": ["script.js"],
+			"js": ["Parsing.js", "ExtensionElements.js", "script.js"],
 			"run_at" : "document_idle"
 		},
 		{

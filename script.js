@@ -1,129 +1,34 @@
-class ExtensionElement{
-	constructor(){
-		this.DOM = null
-		this.tag = 'div'
-		this.className = this.id = this.innerHTML = ''
-		
-		this.first()
-		this.waitToRender()
-		this.second()
-	}
-	
-	// updates
-	first(){}
-	second(){}
-	onRender(){}
-	onUpdate(){}
-	
-	// getters setters
-	get className(){return this.__className}
-	set className(val){
-		this.__className = val
-		this.updateDOM()
-	}
-	
-	get id(){return this.__id}
-	set id(val){
-	    this.__id = val
-		this.updateDOM()
-	}
-	
-	get innerHTML(){return this.__innerHTML}
-	set innerHTML(val){
-	    this.__innerHTML = val
-		this.updateDOM()
-	}
-	
-	// keys causing update
-	updKeys(){
-		return 'id className innerHTML'.split(' ')
-	}
-	
-	// 
-	updateDOM(){
-		if(!this.isRendered()){return null}
-		
-		let domUpdated = false
-		
-		for(let key of this.updKeys()){
-			if(this[key] != this.DOM[key]){
-				this.DOM[key] = this[key]
-				domUpdated = true
-			}
-		}
-		
-		if(domUpdated){
-			this.onUpdate()
-		}
-	}
-	
-	// 
-	waitToRender(){
-		if(this.isRendered()){return true}
-		
-		this.render()
-		
-		if(!this.isRendered()){
-			setTimeout(()=>{
-				this.waitToRender()
-			}, 100)
-		}
-		else{
-			this.onRender()
-		}
-	}
-	
-	render(){
-		let next = document.querySelector('#center')
-		let root = next.parentNode
-		
-		if(!next || !root){return false}
-		
-		this.DOM = document.createElement(this.tag)
-		this.DOM.ext = this
-		root.insertBefore(this.DOM, next)
-		this.updateDOM()
-		return true
-	}
-	
-	isRendered(){return this.DOM ? true : false}	
-}
-
-class BanCounter extends ExtensionElement{
-	get cnt(){return this.__cnt}
-	set cnt(val){
-		this.__cnt = val
-		this.innerHTML = `Removed ${this.cnt} videos`
-	}
-	
-	first(){
-		this.cnt = 0
-	}
-	
-	onRender(){
-		this.DOM.onclick = (e)=>{
-			this.cnt++
-		}
-	}
-	
-	render(){
-		let next = document.querySelector('#center')
-		let root = next.parentNode
-		
-		if(!next || !root){return false}
-		
-		this.DOM = document.createElement(this.tag)
-		this.DOM.ext = this
-		root.insertBefore(this.DOM, next)
-		this.updateDOM()
-		return true
-	}
-}
+let removedVideos = new VideosSet()
+let banlist = new ChannelBlacklist()
 
 let banCounter = new BanCounter()
+let menu = new ExtensionMenu()
+let logo = new ExtensionLogo()
+let banbutton = new BanButton()
+
+setInterval(()=>{
+	for(let vid of parseAllVideos()){
+		let isChannelBlacklisted = banlist.has(vid.channelName) && menu.options['HideBanned']
+		let isVideoSeen = vid.progress && menu.options['HideWatched']
+		let vidShallBeRemoved = isChannelBlacklisted || isVideoSeen
+		if(vidShallBeRemoved){
+			vid.DOM.innerHTML = ''
+			vid.DOM.style.position = 'absolute'
+			removedVideos.add(vid)
+		}
+	}
+    
+    if(removedVideos.updated){
+        removedVideos.updated = false
+        banCounter.cnt = removedVideos.content.length
+    }
+}, 255)
 
 
-
+// let banCounter = new BanCounter('#center')
+// let logo = new ExtensionLogo('#buttons > ytd-button-renderer')
+// let menu = new ExtensionMenu('#end')
+// let banButton = new BanButton('#top-row #subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button')
 
 
 

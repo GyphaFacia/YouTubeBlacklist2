@@ -1,11 +1,210 @@
-$clr-default: #333;
-$clr-darker: #000;
-$clr-text: #eee;
+// 111111
+// 1a1a1a
+// 353535
+// ffffff
+// 4b4b4b
+// 212121
 
-$clr-text: #eee;
-$clr-text-fade: #aaaa;
+$clr-background: #111;
+$clr-panel: #212121;
+$clr-border: #4b4b4b;
+$clr-hover: #4b4b4b;
 
-.test{
-    font-size: 11px;
-    color: $clr-text-fade;
+$clr-button: #2c2c2c;
+
+$clr-text-bright: #eee;
+$clr-text-fade: #aaa;
+
+
+.ytbl-extension{
+    &-bancounter{
+        font-size: 11px;
+        color: $clr-text-fade;   
+    }
+    
+    &-logo{
+        cursor: pointer;
+        object-fit: contain;
+        height: 22px;
+        margin-right: 8px;
+        padding: 8px;
+        transition-duration: 225ms;
+        filter: invert(1);
+        transform: translateY(2px);
+        
+        &:hover{
+            transform: translateY(1px) scale(1.25);
+            filter: invert(1) drop-shadow(0 0 3px white);
+        }
+    }
+    
+    &-menu{
+        background-color: $clr-panel;
+        position: absolute;
+        right: 0;
+        top: 58px;
+        border: 1px solid $clr-border;
+        border-top: none;
+        border-radius: 0 0 0 5px;
+    }
+    
+    &-banbutton{
+        background: $clr-button;
+        background-color: #303030;
+        color: $clr-text-fade;
+        margin-right: 3px;
+        padding: 1px 15px;
+        font-family: Roboto, Noto, sans-serif;
+        font-size: 14px;
+        font-weight: 500; 
+        outline: none;
+        border: none;
+        border-radius: 2px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        font-stretch: 100%;
+        cursor: pointer;
+    }
 }
+
+.menu{
+    &-tabs{
+        padding: 10px;
+        &__tab{
+            min-width: 25vw;
+            min-height: 66vh;
+            max-height: 66vh;
+            overflow-y: auto;
+            
+            box-sizing: border-box;
+            padding: 10px;
+            width: 100%;
+            height: 100%;
+            // background-color: #333;
+            border-radius: 2px;
+            
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
+    }
+    
+    &-switchers{
+        margin-top: 15px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-direction: row;
+        &__switcher{
+            font-size: 12px;
+            padding: 3px;
+            border-radius: 2px;
+            background-color: #444;
+            color: white;
+            cursor: pointer;
+            transition-duration: 100ms;
+            &:hover{
+                filter: brightness(1.5);
+            }
+        }
+    }
+}
+
+.banned-channel{
+    border: 1px solid $clr-border;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    background-color: #333;
+    
+    &__name{
+        font-size: 14px;
+        color: white;
+    }
+    
+    &__button{
+        padding: 5px;
+        background-color: #444;
+        font-size: 16px;
+        color: white;
+        transition-duration: 100ms;
+        cursor: pointer;
+        &:hover{
+            filter: brightness(1.5);
+        }
+    }
+}
+
+.about-links{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    &__link{
+        font-size: 20px;
+        color: white;   
+        text-decoration: none;
+        padding: 10px 0;
+        font-weight: 900;
+        transition-duration: 100ms;
+        
+        &:hover{
+            filter: drop-shadow(0 0 3px white);
+        }
+    }
+}
+
+.extension-settings{
+    &-item{
+        border: 1px solid $clr-border;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5px;
+        background-color: #333;
+        
+        &__checkbox{
+            background: none;
+            border-radius: 50%;
+            border: 1px solid white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 25px;
+            height: 25px;
+            color: white;
+            cursor: pointer;
+            
+            transition-duration: 100ms;
+            
+            &:hover{
+                transform: scale(1.15);
+                filter: drop-shadow(0 0 3px white);
+            }
+        }
+        
+        &__name{
+            font-size: 14px;
+            color: white;
+        }
+    }
+}
+
+.active{
+    filter: brightness(1.5);
+    transform: scale(1.25);
+}
+.hidden{
+    display: none;
+}
+
+
+
+
+
+
+
+
