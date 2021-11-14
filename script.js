@@ -1,10 +1,10 @@
+let removedVideos = new VideosSet()
+let banlist = new ChannelBlacklist()
+
 let banCounter = new BanCounter()
 let menu = new ExtensionMenu()
 let logo = new ExtensionLogo()
 let banbutton = new BanButton()
-
-let removedVideos = new VideosSet()
-let banlist = new ChannelBlacklist()
 
 setInterval(()=>{
 	for(let vid of parseAllVideos()){

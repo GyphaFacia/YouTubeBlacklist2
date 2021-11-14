@@ -174,12 +174,35 @@ class BanButton extends ExtensionElement {
         this.innerHTML = 'BANBUTTON'
     }
     
-    onThink(){
+    getCurrentChannel(){
+        let channelElt = document.querySelector('#channel-name #container #text > a')
+        if(!channelElt){return ''}
         
+        let channelName = channelElt.innerText
+        return channelName ? channelName : ''
+    }
+    
+    onThink(){
+        let buttonText = banlist.has(this.getCurrentChannel()) ? 'UnHide Channel' : 'Hide Channel'
+        if(this.innerHTML != buttonText){
+            this.innerHTML = buttonText
+        }
     }
     
     onRender(){
-        
+        this.DOM.onclick = ()=>{
+            let channelName = this.getCurrentChannel()
+            console.log(banlist.has(channelName));
+            
+            if(!channelName){return null}
+            
+            if(banlist.has(channelName)){
+                banlist.unbanChannel(channelName)
+            }
+            else {
+                banlist.banChannel(channelName)
+            }
+        }
     }
 }
 
