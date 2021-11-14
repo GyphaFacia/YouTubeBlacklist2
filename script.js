@@ -8,7 +8,10 @@ let banbutton = new BanButton()
 
 setInterval(()=>{
 	for(let vid of parseAllVideos()){
-		if(banlist.has(vid.channelName) || vid.progress){
+		let isChannelBlacklisted = banlist.has(vid.channelName) && menu.options['HideBanned']
+		let isVideoSeen = vid.progress && menu.options['HideWatched']
+		let vidShallBeRemoved = isChannelBlacklisted || isVideoSeen
+		if(vidShallBeRemoved){
 			vid.DOM.innerHTML = ''
 			vid.DOM.style.position = 'absolute'
 			removedVideos.add(vid)

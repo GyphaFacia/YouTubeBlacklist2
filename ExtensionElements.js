@@ -200,7 +200,9 @@ class ExtensionMenu extends ExtensionElement{
 	getNextSiblingSelector(){return '#container #buttons > ytd-button-renderer'}
 	first(){
 		this.tag = 'aside'
-		this.className = 'ytbl-extension-menu'
+		this.className = 'ytbl-extension-menu hidden'
+		this.activeTab = 0
+		this.loadOptions()
 	}
 	
 	onRender(){
@@ -209,23 +211,35 @@ class ExtensionMenu extends ExtensionElement{
 			this.DOM.style.top = '56px' 
 		}
 		
-		this.updateMenu()
+		this.updateMenu(true)
+	}
+	
+	deactivateTabs(){
+		for(let tab of document.querySelectorAll('.menu-tabs__tab')){
+			tab.classList.add('hidden')
+		}
+		for(let switcher of document.querySelectorAll('.menu-switchers__switcher')){
+			switcher.classList.remove('active')
+		}
+	}
+	
+	restoreActiveTab(){
+		this.deactivateTabs()
+		let switchers = document.querySelectorAll('.menu-switchers__switcher')
+		let tabs = document.querySelectorAll('.menu-tabs__tab')
+		switchers[this.activeTab].classList.add('active')
+		tabs[this.activeTab].classList.remove('hidden')
 	}
 	
 	hookTabSwitchers(){
 		let switchers = document.querySelectorAll('.menu-switchers__switcher')
 		let tabs = document.querySelectorAll('.menu-tabs__tab')
-		
 		for (let i = 0; i < switchers.length; i++) {
 			switchers[i].onclick = ()=>{
-				for(let tab of tabs){
-					tab.classList.add('hidden')
-				}
-				for(let switcher of switchers){
-					switcher.classList.remove('active')
-				}
+				this.deactivateTabs()
 				switchers[i].classList.add('active')
 				tabs[i].classList.remove('hidden')
+				this.activeTab = i
 			}
 		}
 	}
@@ -252,15 +266,71 @@ class ExtensionMenu extends ExtensionElement{
 		}
 	}
 	
+	loadOptions(){
+		this.options = JSON.parse(localStorage.getItem('options'))
+		if(!this.options){
+			this.options = {
+				'HideBanned': true,
+				'HideWatched' : true,
+			}
+		}
+		this.saveOptions()
+	}
+	
+	saveOptions(){
+		localStorage.setItem('options', JSON.stringify(this.options))
+	}
+	
+	getOptionsDescriptions(){
+		return {
+			'HideBanned': 'Hide videos from blacklisted channels',
+			'HideWatched': 'Hide watched videos',
+		}
+	}
+	
+	getOptionByDescription(description){
+		let kv = this.getOptionsDescriptions()
+		for(let k in kv){
+			if(kv[k] == description){
+				return k
+			}
+		}
+		return ''
+	}
+	
 	getTabSettingsCode(){
+		let kv = this.getOptionsDescriptions()
 		
+		let code = ''
+		for(let k in kv){
+			let mark = this.options[k] ? '✔' : ' '
+			let v = kv[k]
+			code += `
+			<div class="extension-settings-item">
+	            <button class="extension-settings-item__checkbox">${mark}</button>
+	            <span class="extension-settings-item__name">${v}</span>
+	        </div>  
+			` 
+		}
+		
+		code = `<div class="extension-settings"> ${code} </div>`
+		
+		return code
 	}
 	
 	hookTabSettings(){
-		
+		for(let button of document.querySelectorAll('.extension-settings-item__checkbox')){
+			button.onclick = ()=>{
+				let optionsDescr = button.parentNode.children[1].innerText
+				let option = this.getOptionByDescription(optionsDescr)
+				this.options[option] = !this.options[option]
+				this.saveOptions()
+				this.updateMenu()
+			}
+		}
 	}
 	
-	updateMenu(){
+	updateMenu(startHidden = false){
 		this.innerHTML = `
 		<div class="menu-switchers">
 			<div class="menu-switchers__switcher active">Black List</div>
@@ -275,13 +345,18 @@ class ExtensionMenu extends ExtensionElement{
         </div>
 		`
 		
-		// hook tabs
 		this.hookTabSwitchers()		
 		this.hookTabBlacklist()
-	}
-	
-	onThink(){
+		this.hookTabSettings()
 		
+		this.restoreActiveTab()
+		
+		if(startHidden){
+			this.DOM.classList.add('hidden')
+		}
+		else{
+			this.DOM.classList.remove('hidden')
+		}
 	}
 }
 
