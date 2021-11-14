@@ -80,6 +80,9 @@ class ChannelBlacklist {
 	
 	saveList(){
 		chrome.storage.local.set({[this.key] : this.content})
+		if(menu.isRendered()){
+			menu.updateMenu()
+		}
 	}
 }
 

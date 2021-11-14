@@ -159,6 +159,14 @@ class BanButton extends ExtensionElement {
         let channelName = channelElt.innerText
         return channelName ? channelName : ''
     }
+	
+	getCurrentChannelLink(){
+		let channelElt = document.querySelector('#channel-name #container #text > a')
+        if(!channelElt){return ''}
+        
+        let channelLink = channelElt.href
+        return channelLink ? channelLink : ''
+	}
     
     onThink(){
         let buttonText = banlist.has(this.getCurrentChannel()) ? 'UnHide Channel' : 'Hide Channel'
@@ -170,15 +178,15 @@ class BanButton extends ExtensionElement {
     onRender(){
         this.DOM.onclick = ()=>{
             let channelName = this.getCurrentChannel()
-            console.log(banlist.has(channelName));
+			let channelLink = this.getCurrentChannelLink()
             
-            if(!channelName){return null}
+            if(!channelName || !channelLink){return null}
             
             if(banlist.has(channelName)){
                 banlist.unbanChannel(channelName)
             }
             else {
-                banlist.banChannel(channelName)
+                banlist.banChannel(channelName, channelLink)
             }
         }
     }
@@ -200,6 +208,19 @@ class ExtensionMenu extends ExtensionElement{
 		this.updateMenu()
 	}
 	
+	getBlacklistTab(){
+		let code = ''
+		for(let channel in banlist.content){
+			code += `
+			<span class="banned-channel">
+		        <a class="banned-channel__name" href="${banlist.content[channel]}">${channel}</a>
+		        <div class="banned-channel__button">UnHide Channel</div>
+		    </span>
+			`
+		}
+		return code
+	}
+	
 	updateMenu(){
 		this.innerHTML = `
 		<div class="menu-switchers">
@@ -209,12 +230,13 @@ class ExtensionMenu extends ExtensionElement{
 		</div>
 		
 		<div class="menu-tabs">
-            <div class="menu-tabs__tab"></div>
+            <div class="menu-tabs__tab">${this.getBlacklistTab()}</div>
             <div class="menu-tabs__tab hidden"></div>
             <div class="menu-tabs__tab hidden"></div>
         </div>
 		`
 		
+		// hook tabs
 		let switchers = document.querySelectorAll('.menu-switchers__switcher')
 		let tabs = document.querySelectorAll('.menu-tabs__tab')
 		
@@ -228,6 +250,14 @@ class ExtensionMenu extends ExtensionElement{
 				}
 				switchers[i].classList.add('active')
 				tabs[i].classList.remove('hidden')
+			}
+		}
+		
+		// Blacklist tab: hook unhide buttons
+		for(let button of document.querySelectorAll('.banned-channel__button')){
+			button.onclick = ()=>{
+				banlist.unbanChannel(button.parentNode.children[0].innerText)
+				this.updateMenu()
 			}
 		}
 	}
