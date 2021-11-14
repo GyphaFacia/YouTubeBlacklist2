@@ -121,13 +121,6 @@ class BanCounter extends ExtensionElement{
 		this.cnt = 0
 		this.className = 'ytbl-extension-bancounter'
 	}
-	
-	onRender(){
-		this.DOM.onclick = (e)=>{
-			this.cnt++
-		}
-	}
-	
 }
 
 class ExtensionLogo extends ExtensionElement{
@@ -147,21 +140,6 @@ class ExtensionLogo extends ExtensionElement{
 		}
 	}
 	
-}
-
-class ExtensionMenu extends ExtensionElement{
-	getNextSiblingSelector(){return '#container #buttons > ytd-button-renderer'}
-	first(){
-		this.tag = 'aside'
-		this.className = 'ytbl-extension-menu hidden'
-	}
-	
-	onRender(){
-		if(window.location.href.includes('/watch')){
-			// page with video player has no header border for some reason
-			this.DOM.style.top = '56px' 
-		}
-	}
 }
 
 class BanButton extends ExtensionElement {
@@ -206,7 +184,58 @@ class BanButton extends ExtensionElement {
     }
 }
 
-
+class ExtensionMenu extends ExtensionElement{
+	getNextSiblingSelector(){return '#container #buttons > ytd-button-renderer'}
+	first(){
+		this.tag = 'aside'
+		this.className = 'ytbl-extension-menu'
+	}
+	
+	onRender(){
+		if(window.location.href.includes('/watch')){
+			// page with video player has no header border for some reason
+			this.DOM.style.top = '56px' 
+		}
+		
+		this.updateMenu()
+	}
+	
+	updateMenu(){
+		this.innerHTML = `
+		<div class="menu-switchers">
+			<div class="menu-switchers__switcher active">Black List</div>
+			<div class="menu-switchers__switcher">Watched Videos</div>
+			<div class="menu-switchers__switcher">Suggestions Limit</div>
+		</div>
+		
+		<div class="menu-tabs">
+            <div class="menu-tabs__tab"></div>
+            <div class="menu-tabs__tab hidden"></div>
+            <div class="menu-tabs__tab hidden"></div>
+        </div>
+		`
+		
+		let switchers = document.querySelectorAll('.menu-switchers__switcher')
+		let tabs = document.querySelectorAll('.menu-tabs__tab')
+		
+		for (let i = 0; i < switchers.length; i++) {
+			switchers[i].onclick = ()=>{
+				for(let tab of tabs){
+					tab.classList.add('hidden')
+				}
+				for(let switcher of switchers){
+					switcher.classList.remove('active')
+				}
+				switchers[i].classList.add('active')
+				tabs[i].classList.remove('hidden')
+			}
+		}
+	}
+	
+	onThink(){
+		
+	}
+}
 
 
 
