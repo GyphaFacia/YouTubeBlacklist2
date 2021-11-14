@@ -330,6 +330,16 @@ class ExtensionMenu extends ExtensionElement{
 		}
 	}
 	
+	getTabAboutCode(){
+		return `
+		<div class="about-links">
+	        <a href="https://github.com/GyphaFacia" class="about-links__link">My Git Hub</a>
+	    </div>
+		`
+	}
+	
+	hookTabAbout(){}
+	
 	updateMenu(startHidden = false){
 		this.innerHTML = `
 		<div class="menu-switchers">
@@ -341,7 +351,7 @@ class ExtensionMenu extends ExtensionElement{
 		<div class="menu-tabs">
             <div class="menu-tabs__tab">${this.getTabBlacklistCode()}</div>
             <div class="menu-tabs__tab hidden">${this.getTabSettingsCode()}</div>
-            <div class="menu-tabs__tab hidden"></div>
+            <div class="menu-tabs__tab hidden">${this.getTabAboutCode()}</div>
         </div>
 		`
 		

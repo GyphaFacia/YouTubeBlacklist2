@@ -137,6 +137,25 @@ $clr-text-fade: #aaa;
     }
 }
 
+.about-links{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    &__link{
+        font-size: 20px;
+        color: white;   
+        text-decoration: none;
+        padding: 10px 0;
+        font-weight: 900;
+        transition-duration: 100ms;
+        
+        &:hover{
+            filter: drop-shadow(0 0 3px white);
+        }
+    }
+}
+
 .extension-settings{
     &-item{
         border: 1px solid $clr-border;
