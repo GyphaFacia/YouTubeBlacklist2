@@ -321,7 +321,7 @@ class ExtensionMenu extends ExtensionElement{
 	hookTabSettings(){
 		for(let button of document.querySelectorAll('.extension-settings-item__checkbox')){
 			button.onclick = ()=>{
-				let optionsDescr = button.parentNode.children[1].innerText
+				let optionsDescr = button.parentNode.children[0].innerText
 				let option = this.getOptionByDescription(optionsDescr)
 				this.options[option] = !this.options[option]
 				this.saveOptions()
