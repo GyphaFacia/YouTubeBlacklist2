@@ -307,8 +307,8 @@ class ExtensionMenu extends ExtensionElement{
 			let v = kv[k]
 			code += `
 			<div class="extension-settings-item">
-	            <button class="extension-settings-item__checkbox">${mark}</button>
 	            <span class="extension-settings-item__name">${v}</span>
+				<button class="extension-settings-item__checkbox">${mark}</button>
 	        </div>  
 			` 
 		}
