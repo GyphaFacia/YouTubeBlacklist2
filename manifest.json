@@ -22,12 +22,17 @@
 	
 	"content_scripts":[
 		{
-			"matches" : ["https://www.youtube.com/*", "https://www.google.com/*", "https://stackoverflow.com/*"],
-			"js": ["Parsing.js", "ExtensionElements.js", "script.js"],
+			"matches" : ["https://www.youtube.com/*"],
+			"js": [
+				"Suggestions.js",
+				"Parsing.js",
+				"ExtensionElements.js",
+				"script.js"
+			],
 			"run_at" : "document_idle"
 		},
 		{
-			"matches" : ["https://www.youtube.com/*", "https://www.google.com/*", "https://stackoverflow.com/*"],
+			"matches" : ["https://www.youtube.com/*"],
 			"css": ["style.min.css"]
 		}
 	]
