@@ -110,7 +110,7 @@ $clr-text-fade: #aaa;
     }
 }
 
-.banned-channel{
+.banned-channel, .banned-video{
     border: 1px solid $clr-border;
     padding: 10px;
     display: flex;

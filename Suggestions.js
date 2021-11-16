@@ -15,6 +15,14 @@ class Suggestions{
         
         let newStore = {...this.content, ...JSON.parse(localStorage.getItem('suggestions'))}
         localStorage.setItem('suggestions', JSON.stringify(this.content))
-        console.log(newStore);
+        this.content = newStore
+        menu.updateMenu()
+    }
+    
+    removeVideo(link){
+        let newStore = JSON.parse(localStorage.getItem('suggestions'))
+        delete newStore[link]
+        this.content = newStore
+        localStorage.setItem('suggestions', JSON.stringify(this.content))
     }
 }

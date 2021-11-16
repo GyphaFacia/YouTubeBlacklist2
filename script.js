@@ -15,19 +15,18 @@ setInterval(()=>{
 			
 			if(	confirm(`Do you want to hide \n${name}\nvideo from suggestions ?`) ){
 				suggestions.addVideo(link, name)
+				e.preventDefault()
 			}
 		}
 	}
 	
 	for(let vid of parseAllVideos()){
-		// suggestions.updateVideo(vid.videoHref)
-		// console.log(vid.videoHref, sugges);
-		// console.log(vid);
-		
 		let pageIsHistory = window.location.href.includes('/history')
 		let isChannelBlacklisted = banlist.has(vid.channelName) && menu.options['HideBanned']
 		let isVideoSeen = vid.progress && menu.options['HideWatched'] && !pageIsHistory
-		let vidShallBeRemoved = isChannelBlacklisted || isVideoSeen
+		let videoHiddenFromSuggestions = (vid.videoHref in suggestions.content) && menu.options['HideSuggested']
+		
+		let vidShallBeRemoved = isChannelBlacklisted || isVideoSeen || videoHiddenFromSuggestions
 		if(vidShallBeRemoved){
 			vid.DOM.innerHTML = ''
 			vid.DOM.style.position = 'absolute'
