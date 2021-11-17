@@ -266,12 +266,38 @@ class ExtensionMenu extends ExtensionElement{
 		}
 	}
 	
+	getTabSuggestionsCode(){
+		let code = ''
+		for(let link in suggestions.content){
+			let title = suggestions.content[link]
+			title = title.length < 30 ? title : (title.substr(0, 27) + '...')
+			code += `
+			<span class="banned-video">
+		        <a class="banned-video__name" href="${link}">${title}</a>
+		        <div class="banned-video__button ">UnHide Video</div>
+		    </span>
+			`
+		}
+		return code
+	}
+	
+	hookTabSuggestions(){
+		for(let button of document.querySelectorAll('.banned-video__button')){
+			button.onclick = ()=>{
+				let link = button.parentNode.children[0].href
+				suggestions.removeVideo(link)
+				this.updateMenu()
+			}
+		}
+	}
+	
 	loadOptions(){
 		this.options = JSON.parse(localStorage.getItem('options'))
 		if(!this.options){
 			this.options = {
 				'HideBanned': true,
 				'HideWatched' : true,
+				'HideSuggested': true,
 			}
 		}
 		this.saveOptions()
@@ -285,6 +311,7 @@ class ExtensionMenu extends ExtensionElement{
 		return {
 			'HideBanned': 'Hide videos from blacklisted channels',
 			'HideWatched': 'Hide watched videos',
+			'HideSuggested': 'Hide videos you blacklisted from suggestions',
 		}
 	}
 	
@@ -307,8 +334,8 @@ class ExtensionMenu extends ExtensionElement{
 			let v = kv[k]
 			code += `
 			<div class="extension-settings-item">
-	            <button class="extension-settings-item__checkbox">${mark}</button>
 	            <span class="extension-settings-item__name">${v}</span>
+				<button class="extension-settings-item__checkbox">${mark}</button>
 	        </div>  
 			` 
 		}
@@ -321,7 +348,7 @@ class ExtensionMenu extends ExtensionElement{
 	hookTabSettings(){
 		for(let button of document.querySelectorAll('.extension-settings-item__checkbox')){
 			button.onclick = ()=>{
-				let optionsDescr = button.parentNode.children[1].innerText
+				let optionsDescr = button.parentNode.children[0].innerText
 				let option = this.getOptionByDescription(optionsDescr)
 				this.options[option] = !this.options[option]
 				this.saveOptions()
@@ -344,12 +371,14 @@ class ExtensionMenu extends ExtensionElement{
 		this.innerHTML = `
 		<div class="menu-switchers">
 			<div class="menu-switchers__switcher active">Black List</div>
+			<div class="menu-switchers__switcher">Suggestions</div>
 			<div class="menu-switchers__switcher">Settings</div>
 			<div class="menu-switchers__switcher">About</div>
 		</div>
 		
 		<div class="menu-tabs">
             <div class="menu-tabs__tab">${this.getTabBlacklistCode()}</div>
+			<div class="menu-tabs__tab hidden">${this.getTabSuggestionsCode()}</div>
             <div class="menu-tabs__tab hidden">${this.getTabSettingsCode()}</div>
             <div class="menu-tabs__tab hidden">${this.getTabAboutCode()}</div>
         </div>
@@ -357,6 +386,7 @@ class ExtensionMenu extends ExtensionElement{
 		
 		this.hookTabSwitchers()		
 		this.hookTabBlacklist()
+		this.hookTabSuggestions()
 		this.hookTabSettings()
 		
 		this.restoreActiveTab()
