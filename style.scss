@@ -5,6 +5,13 @@ $clr-extension-button : #444;
 $clr-extension-border : #4b4b4b;
 $clr-bright : #aaa;
 
+@mixin flex($dir: row, $just: center, $align: center){
+    display: flex;
+    flex-direction: $dir;
+    justify-content: $just;
+    align-items: $align;
+}
+
 .ytbl-extension{
     &-bancounter{
         font-size: 11px;
@@ -77,11 +84,8 @@ $clr-bright : #aaa;
     }
     
     &-switchers{
+        @include flex(row, space-around, center);
         margin-top: 15px;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-direction: row;
         &__switcher{
             font-size: 12px;
             padding: 3px;
@@ -98,11 +102,9 @@ $clr-bright : #aaa;
 }
 
 .banned-channel, .banned-video{
+    @include flex(row, space-between, center);
     border: 1px solid $clr-extension-border;
     padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 5px;
     background-color: $clr-extension-bg;
     
@@ -125,10 +127,7 @@ $clr-bright : #aaa;
 }
 
 .about-links{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    @include flex(column, center, center);
     &__link{
         font-size: 20px;
         color: white;   
@@ -147,9 +146,7 @@ $clr-bright : #aaa;
     &-item{
         border: 1px solid $clr-extension-border;
         padding: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        @include flex(row, space-between, center);
         margin-bottom: 5px;
         background-color: $clr-extension-bg;
         
@@ -157,9 +154,7 @@ $clr-bright : #aaa;
             background: none;
             border-radius: 50%;
             border: 1px solid white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            @include flex(row, center, center);
             width: 25px;
             height: 25px;
             color: white;
