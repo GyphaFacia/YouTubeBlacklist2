@@ -1,6 +1,6 @@
 {
 	"name" : "YouTube Blacklist",
-	"description" : "Remove unacceptable channels from your search list",
+	"description" : "Remove unacceptable channels from your search and suggestions",
 	"version" : "1.0",
 	"manifest_version": 2,
 	"icons" : {
