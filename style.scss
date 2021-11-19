@@ -5,6 +5,8 @@ $clr-extension-button : #444;
 $clr-extension-border : #4b4b4b;
 $clr-bright : #aaa;
 
+$default-transition-duration : 100ms;
+
 @mixin flex($dir: row, $just: center, $align: center){
     display: flex;
     flex-direction: $dir;
@@ -24,7 +26,7 @@ $clr-bright : #aaa;
         height: 22px;
         margin-right: 8px;
         padding: 8px;
-        transition-duration: 225ms;
+        transition-duration: $default-transition-duration;
         filter: invert(1);
         transform: translateY(2px);
         
@@ -93,7 +95,7 @@ $clr-bright : #aaa;
             background-color: $clr-extension-button;
             color: white;
             cursor: pointer;
-            transition-duration: 100ms;
+            transition-duration: $default-transition-duration;
             &:hover{
                 filter: brightness(1.5);
             }
@@ -118,7 +120,7 @@ $clr-bright : #aaa;
         background-color: $clr-extension-button;
         font-size: 16px;
         color: white;
-        transition-duration: 100ms;
+        transition-duration: $default-transition-duration;
         cursor: pointer;
         &:hover{
             filter: brightness(1.5);
@@ -134,7 +136,7 @@ $clr-bright : #aaa;
         text-decoration: none;
         padding: 10px 0;
         font-weight: 900;
-        transition-duration: 100ms;
+        transition-duration: $default-transition-duration;
         
         &:hover{
             filter: drop-shadow(0 0 3px white);
@@ -160,7 +162,7 @@ $clr-bright : #aaa;
             color: white;
             cursor: pointer;
             
-            transition-duration: 100ms;
+            transition-duration: $default-transition-duration;
             
             &:hover{
                 transform: scale(1.15);
