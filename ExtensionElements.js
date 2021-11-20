@@ -1,3 +1,11 @@
+// 8888888888          888    8888888888 888 888    
+// 888                 888    888        888 888    
+// 888                 888    888        888 888    
+// 8888888    888  888 888888 8888888    888 888888 
+// 888        `Y8bd8P' 888    888        888 888    
+// 888          X88K   888    888        888 888    
+// 888        .d8""8b. Y88b.  888        888 Y88b.  
+// 8888888888 888  888  "Y888 8888888888 888  "Y888 
 class ExtensionElement{
 	constructor(){
 		this.DOM = null
@@ -109,6 +117,18 @@ class ExtensionElement{
 	}
 }
 
+
+
+
+
+// 888888b.                      .d8888b.           888    
+// 888  "88b                    d88P  Y88b          888    
+// 888  .88P                    888    888          888    
+// 8888888K.   8888b.  88888b.  888        88888b.  888888 
+// 888  "Y88b     "88b 888 "88b 888        888 "88b 888    
+// 888    888 .d888888 888  888 888    888 888  888 888    
+// 888   d88P 888  888 888  888 Y88b  d88P 888  888 Y88b.  
+// 8888888P"  "Y888888 888  888  "Y8888P"  888  888  "Y888 
 class BanCounter extends ExtensionElement{
 	getNextSiblingSelector(){return '#center'}
 	get cnt(){return this.__cnt}
@@ -122,6 +142,22 @@ class BanCounter extends ExtensionElement{
 		this.className = 'ytbl-extension-bancounter'
 	}
 }
+
+
+
+
+
+// 888                                
+// 888                                
+// 888                                
+// 888      .d88b.   .d88b.   .d88b.  
+// 888     d88""88b d88P"88b d88""88b 
+// 888     888  888 888  888 888  888 
+// 888     Y88..88P Y88b 888 Y88..88P 
+// 88888888 "Y88P"   "Y88888  "Y88P"  
+//                       888          
+//                  Y8b d88P          
+//                   "Y88P"           
 
 class ExtensionLogo extends ExtensionElement{
 	getNextSiblingSelector(){return '#container #buttons > ytd-button-renderer'}
@@ -142,6 +178,18 @@ class ExtensionLogo extends ExtensionElement{
 	
 }
 
+
+
+
+
+// 888888b.                     888888b.   888             
+// 888  "88b                    888  "88b  888             
+// 888  .88P                    888  .88P  888             
+// 8888888K.   8888b.  88888b.  8888888K.  888888 88888b.  
+// 888  "Y88b     "88b 888 "88b 888  "Y88b 888    888 "88b 
+// 888    888 .d888888 888  888 888    888 888    888  888 
+// 888   d88P 888  888 888  888 888   d88P Y88b.  888  888 
+// 8888888P"  "Y888888 888  888 8888888P"   "Y888 888  888 
 class BanButton extends ExtensionElement {
     getNextSiblingSelector(){
         return '#top-row #subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button'
@@ -196,6 +244,18 @@ class BanButton extends ExtensionElement {
     }
 }
 
+
+
+
+
+// 888b     d888                            
+// 8888b   d8888                            
+// 88888b.d88888                            
+// 888Y88888P888  .d88b.  88888b.  888  888 
+// 888 Y888P 888 d8P  Y8b 888 "88b 888  888 
+// 888  Y8P  888 88888888 888  888 888  888 
+// 888   "   888 Y8b.     888  888 Y88b 888 
+// 888       888  "Y8888  888  888  "Y88888 
 class ExtensionMenu extends ExtensionElement{
 	getNextSiblingSelector(){return '#container #buttons > ytd-button-renderer'}
 	first(){
@@ -244,6 +304,9 @@ class ExtensionMenu extends ExtensionElement{
 		}
 	}
 	
+	////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////Blacklist//////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
 	getTabBlacklistCode(){
 		let code = ''
 		for(let channel in banlist.content){
@@ -266,6 +329,9 @@ class ExtensionMenu extends ExtensionElement{
 		}
 	}
 	
+	////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////Suggestions///////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
 	getTabSuggestionsCode(){
 		let code = ''
 		for(let link in suggestions.content){
@@ -291,6 +357,9 @@ class ExtensionMenu extends ExtensionElement{
 		}
 	}
 	
+	////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////Options//////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
 	loadOptions(){
 		this.options = JSON.parse(localStorage.getItem('options'))
 		if(!this.options){
@@ -325,6 +394,9 @@ class ExtensionMenu extends ExtensionElement{
 		return ''
 	}
 	
+	////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////Settings//////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
 	getTabSettingsCode(){
 		let kv = this.getOptionsDescriptions()
 		
@@ -357,6 +429,9 @@ class ExtensionMenu extends ExtensionElement{
 		}
 	}
 	
+	////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////About///////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
 	getTabAboutCode(){
 		return `
 		<div class="about-links">
@@ -365,8 +440,7 @@ class ExtensionMenu extends ExtensionElement{
 		`
 	}
 	
-	hookTabAbout(){}
-	
+
 	updateMenu(startHidden = false){
 		this.innerHTML = `
 		<div class="menu-switchers">

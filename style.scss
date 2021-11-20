@@ -1,25 +1,23 @@
-// 111111
-// 1a1a1a
-// 353535
-// ffffff
-// 4b4b4b
-// 212121
+$clr-menu : #212121;
+$clr-banbutton : #303030;
+$clr-extension-bg : #333;
+$clr-extension-button : #444;
+$clr-extension-border : #4b4b4b;
+$clr-bright : #aaa;
 
-$clr-background: #111;
-$clr-panel: #212121;
-$clr-border: #4b4b4b;
-$clr-hover: #4b4b4b;
+$default-transition-duration : 100ms;
 
-$clr-button: #2c2c2c;
-
-$clr-text-bright: #eee;
-$clr-text-fade: #aaa;
-
+@mixin flex($dir: row, $just: center, $align: center){
+    display: flex;
+    flex-direction: $dir;
+    justify-content: $just;
+    align-items: $align;
+}
 
 .ytbl-extension{
     &-bancounter{
         font-size: 11px;
-        color: $clr-text-fade;   
+        color: $clr-bright;   
     }
     
     &-logo{
@@ -28,7 +26,7 @@ $clr-text-fade: #aaa;
         height: 22px;
         margin-right: 8px;
         padding: 8px;
-        transition-duration: 225ms;
+        transition-duration: $default-transition-duration;
         filter: invert(1);
         transform: translateY(2px);
         
@@ -39,19 +37,18 @@ $clr-text-fade: #aaa;
     }
     
     &-menu{
-        background-color: $clr-panel;
+        background-color: $clr-menu;
         position: absolute;
         right: 0;
         top: 58px;
-        border: 1px solid $clr-border;
+        border: 1px solid $clr-extension-border;
         border-top: none;
         border-radius: 0 0 0 5px;
     }
     
     &-banbutton{
-        background: $clr-button;
-        background-color: #303030;
-        color: $clr-text-fade;
+        background-color: $clr-banbutton;
+        color: $clr-bright;
         margin-right: 3px;
         padding: 1px 15px;
         font-family: Roboto, Noto, sans-serif;
@@ -80,7 +77,6 @@ $clr-text-fade: #aaa;
             padding: 10px;
             width: 100%;
             height: 100%;
-            // background-color: #333;
             border-radius: 2px;
             
             &::-webkit-scrollbar {
@@ -90,19 +86,16 @@ $clr-text-fade: #aaa;
     }
     
     &-switchers{
+        @include flex(row, space-around, center);
         margin-top: 15px;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-direction: row;
         &__switcher{
             font-size: 12px;
             padding: 3px;
             border-radius: 2px;
-            background-color: #444;
+            background-color: $clr-extension-button;
             color: white;
             cursor: pointer;
-            transition-duration: 100ms;
+            transition-duration: $default-transition-duration;
             &:hover{
                 filter: brightness(1.5);
             }
@@ -111,13 +104,11 @@ $clr-text-fade: #aaa;
 }
 
 .banned-channel, .banned-video{
-    border: 1px solid $clr-border;
+    @include flex(row, space-between, center);
+    border: 1px solid $clr-extension-border;
     padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 5px;
-    background-color: #333;
+    background-color: $clr-extension-bg;
     
     &__name{
         font-size: 14px;
@@ -126,10 +117,10 @@ $clr-text-fade: #aaa;
     
     &__button{
         padding: 5px;
-        background-color: #444;
+        background-color: $clr-extension-button;
         font-size: 16px;
         color: white;
-        transition-duration: 100ms;
+        transition-duration: $default-transition-duration;
         cursor: pointer;
         &:hover{
             filter: brightness(1.5);
@@ -138,17 +129,14 @@ $clr-text-fade: #aaa;
 }
 
 .about-links{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    @include flex(column, center, center);
     &__link{
         font-size: 20px;
         color: white;   
         text-decoration: none;
         padding: 10px 0;
         font-weight: 900;
-        transition-duration: 100ms;
+        transition-duration: $default-transition-duration;
         
         &:hover{
             filter: drop-shadow(0 0 3px white);
@@ -158,27 +146,23 @@ $clr-text-fade: #aaa;
 
 .extension-settings{
     &-item{
-        border: 1px solid $clr-border;
+        border: 1px solid $clr-extension-border;
         padding: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        @include flex(row, space-between, center);
         margin-bottom: 5px;
-        background-color: #333;
+        background-color: $clr-extension-bg;
         
         &__checkbox{
             background: none;
             border-radius: 50%;
             border: 1px solid white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            @include flex(row, center, center);
             width: 25px;
             height: 25px;
             color: white;
             cursor: pointer;
             
-            transition-duration: 100ms;
+            transition-duration: $default-transition-duration;
             
             &:hover{
                 transform: scale(1.15);
