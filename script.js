@@ -36,7 +36,6 @@ setInterval(()=>{
 		}
 	}
 	
-	console.log(isStoreUpdated(), isStoreUpdated() != window.location.href);
 	if(isStoreUpdated() && isStoreUpdated() != window.location.href){
 		setTimeout(()=>{
 			setStoreIsUpdated(false)
