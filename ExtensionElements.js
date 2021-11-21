@@ -483,7 +483,23 @@ class ExtensionMenu extends ExtensionElement{
 			reader.onload = ()=>{
 				let data = reader.result
 				data = JSON.parse(data);
-				console.log(data);
+				
+				if('blacklist' in data && 'suggestions' in data){
+					localStorage.setItem('blacklist', JSON.stringify(data.blacklist))
+					localStorage.setItem('suggestions', JSON.stringify(data.suggestions))
+					
+					banlist.update()
+					suggestions.update()
+					setStoreIsUpdated(true)
+					alert('Blacklists successfully imported')
+				}
+				else{
+					alert('Error occurred reading imported file')
+				}
+			}
+			
+			reader.onerror = ()=>{
+				alert('Error occurred reading imported file')
 			}
 		}
 	}
