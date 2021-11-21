@@ -432,12 +432,65 @@ class ExtensionMenu extends ExtensionElement{
 	getTabAboutCode(){
 		return `
 		<div class="about-links">
-	        <a href="https://github.com/GyphaFacia" class="about-links__link">My Git Hub</a>
+			<button class="about-links__clearbtn">Clear Blacklists</button>
+			
+			<a class="about-links__exportbtn">Export Blacklists</a>
+			
+			<span class="about-links-import-wrapper">
+				<input class="about-links__importbtn" type="file">
+				Import Blacklists
+			</span>
+			
+			<a href="https://github.com/GyphaFacia" class="about-links__link">Visit my GitHub</a>
 	    </div>
 		`
 	}
+	// <input type="file" name="" value="">
 	
-
+	hookTabAbout(){
+		let data = {}
+		data.blacklist = JSON.parse(localStorage.getItem('blacklist'))
+		data.suggestions = JSON.parse(localStorage.getItem('suggestions'))
+		data = JSON.stringify(data);
+		data = "data:text/json;charset=utf-8," + encodeURIComponent(data)
+		
+		// clear
+		let clearBtn = document.querySelector('.about-links__clearbtn')
+		clearBtn.onclick = ()=>{
+			if(confirm('Do you actually want to reset your blacklists for this extension ?')){
+				localStorage.setItem('blacklist', '{}')
+				localStorage.setItem('suggestions', '{}')
+				
+				banlist.update()
+				suggestions.update()
+				setStoreIsUpdated(true)
+			}
+		}
+		
+		// export
+		let exportBtn = document.querySelector('.about-links__exportbtn')
+		exportBtn.setAttribute("href", data)
+		exportBtn.setAttribute("download", "YoutubeBlacklists.json")
+		
+		// import
+		let importBtn = document.querySelector('.about-links-import-wrapper')
+		importBtn.onclick = ()=>{
+			importBtn.children[0].click()
+		}
+		importBtn.children[0].onchange = (e)=>{
+			let reader = new FileReader();
+			reader.readAsText(e.target.files[0])
+			reader.onload = ()=>{
+				let data = reader.result
+				data = JSON.parse(data);
+				console.log(data);
+			}
+		}
+	}
+	
+	////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
 	updateMenu(startHidden = false){
 		this.innerHTML = `
 		<div class="menu-switchers">
@@ -459,6 +512,7 @@ class ExtensionMenu extends ExtensionElement{
 		this.hookTabBlacklist()
 		this.hookTabSuggestions()
 		this.hookTabSettings()
+		this.hookTabAbout()
 		
 		this.restoreActiveTab()
 		

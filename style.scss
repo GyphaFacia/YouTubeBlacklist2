@@ -130,16 +130,31 @@ $default-transition-duration : 100ms;
 
 .about-links{
     @include flex(column, center, center);
-    &__link{
-        font-size: 20px;
-        color: white;   
+    
+    &__importbtn{
+        display: none;
+    }
+    
+    & > *{
+        box-sizing: border-box;
+        background: none;
+        border-radius: 3px;
+        border: 1px solid $clr-extension-border;
+        font-size: 16px;
+        color: $clr-bright;
         text-decoration: none;
-        padding: 10px 0;
+        padding: 10px 5px;
+        margin-bottom: 10px;
         font-weight: 900;
         transition-duration: $default-transition-duration;
+        width: 100%;
+        cursor: pointer;
         
+        @include flex();
+
         &:hover{
-            filter: drop-shadow(0 0 3px white);
+            color: white;
+            background-color: $clr-banbutton;
         }
     }
 }
