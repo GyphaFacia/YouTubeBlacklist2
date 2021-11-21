@@ -33,56 +33,39 @@ function getSelectorsFromPageType(pageType){
 	return json[pageType]
 }
 
-class ChannelBlacklist {
+class ChannelBlacklist{
 	constructor(){
-		this.key = 'CHANNELS_BLACKLIST'
-		this.content = {}
-		this.loadList()
-	}
-	
-	banChannel(name, link){
-		this.content[name] = link
-		this.saveList()
-	}
-	
-	unbanChannel(name){
-		delete this.content[name]
-		this.saveList()
-	}
-	
-	getBannedNames(){
-		let names = []
-		for(name in this.content){
-			names.push(name)
-		}
-		return names
-	}
-	
-	getBannedLinks(){
-		let links = []
-		for(link of this.content){
-			links.push(link)
-		}
-		return links
-	}
+        this.content = {}
+        let store = localStorage.getItem('blacklist')
+        if(!store){
+            localStorage.setItem('blacklist', JSON.stringify(this.content))
+        }
+        else{
+            this.content = JSON.parse(store);
+        }
+    }
+    
+    banChannel(name, link){
+        this.content[name] = link
+        
+        let newStore = {...this.content, ...JSON.parse(localStorage.getItem('blacklist'))}
+        localStorage.setItem('blacklist', JSON.stringify(this.content))
+        this.content = newStore
+        menu.updateMenu()
+    }
+    
+    unbanChannel(name){
+        let newStore = JSON.parse(localStorage.getItem('blacklist'))
+        delete newStore[name]
+        this.content = newStore
+        localStorage.setItem('blacklist', JSON.stringify(this.content))
+		menu.updateMenu()
+    }
 	
 	has(name){
+		let store = {...this.content, ...JSON.parse(localStorage.getItem('blacklist'))}
+		this.content = store
 		return (name in this.content)
-	}
-	
-	loadList(){
-		this.content = {}
-		chrome.storage.local.get([this.key], (data)=>{
-			this.content = data[this.key]
-            this.content = this.content ? this.content : {}
-		})
-	}
-	
-	saveList(){
-		chrome.storage.local.set({[this.key] : this.content})
-		if(menu.isRendered()){
-			menu.updateMenu()
-		}
 	}
 }
 
