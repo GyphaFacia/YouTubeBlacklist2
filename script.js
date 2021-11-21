@@ -14,7 +14,7 @@ setInterval(()=>{
 			let name = thumbnail.querySelector('#video-title').innerText
 			
 			if(	confirm(`Do you want to hide \n${name}\nvideo from suggestions ?`) ){
-				suggestions.addVideo(link, name)
+				suggestions.addToList(link, name)
 				e.preventDefault()
 			}
 		}

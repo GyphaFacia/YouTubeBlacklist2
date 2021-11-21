@@ -235,10 +235,10 @@ class BanButton extends ExtensionElement {
             if(!channelName || !channelLink){return null}
             
             if(banlist.has(channelName)){
-                banlist.unbanChannel(channelName)
+                banlist.removeFromList(channelName)
             }
             else {
-                banlist.banChannel(channelName, channelLink)
+                banlist.addToList(channelName, channelLink)
             }
         }
     }
@@ -323,7 +323,7 @@ class ExtensionMenu extends ExtensionElement{
 	hookTabBlacklist(){
 		for(let button of document.querySelectorAll('.banned-channel__button')){
 			button.onclick = ()=>{
-				banlist.unbanChannel(button.parentNode.children[0].innerText)
+				banlist.removeFromList(button.parentNode.children[0].innerText)
 				this.updateMenu()
 			}
 		}
@@ -351,7 +351,7 @@ class ExtensionMenu extends ExtensionElement{
 		for(let button of document.querySelectorAll('.banned-video__button')){
 			button.onclick = ()=>{
 				let link = button.parentNode.children[0].href
-				suggestions.removeVideo(link)
+				suggestions.removeFromList(link)
 				this.updateMenu()
 			}
 		}

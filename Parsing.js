@@ -33,40 +33,49 @@ function getSelectorsFromPageType(pageType){
 	return json[pageType]
 }
 
-class ChannelBlacklist{
+class Blacklist{
+	storageKey(){return 'BlacklistLocalStorageKey'}
+	
 	constructor(){
         this.content = {}
-        let store = localStorage.getItem('blacklist')
+        let store = localStorage.getItem(this.storageKey())
         if(!store){
-            localStorage.setItem('blacklist', JSON.stringify(this.content))
+            localStorage.setItem(this.storageKey(), JSON.stringify(this.content))
         }
         else{
             this.content = JSON.parse(store);
         }
     }
-    
-    banChannel(name, link){
-        this.content[name] = link
+	
+	addToList(key, val){
+        this.content[key] = val
         
-        let newStore = {...this.content, ...JSON.parse(localStorage.getItem('blacklist'))}
-        localStorage.setItem('blacklist', JSON.stringify(this.content))
+        let newStore = {...this.content, ...JSON.parse(localStorage.getItem(this.storageKey()))}
+        localStorage.setItem(this.storageKey(), JSON.stringify(this.content))
         this.content = newStore
         menu.updateMenu()
     }
     
-    unbanChannel(name){
-        let newStore = JSON.parse(localStorage.getItem('blacklist'))
-        delete newStore[name]
+    removeFromList(key){
+        let newStore = JSON.parse(localStorage.getItem(this.storageKey()))
+        delete newStore[key]
         this.content = newStore
-        localStorage.setItem('blacklist', JSON.stringify(this.content))
-		menu.updateMenu()
+        localStorage.setItem(this.storageKey(), JSON.stringify(this.content))
     }
 	
-	has(name){
-		let store = {...this.content, ...JSON.parse(localStorage.getItem('blacklist'))}
+	has(key){
+		let store = {...this.content, ...JSON.parse(localStorage.getItem(this.storageKey()))}
 		this.content = store
-		return (name in this.content)
+		return (key in this.content)
 	}
+}
+
+class Suggestions extends Blacklist{
+	storageKey(){return 'suggestions'}
+}
+
+class ChannelBlacklist extends Blacklist{
+	storageKey(){return 'blacklist'}
 }
 
 class VideosSet {

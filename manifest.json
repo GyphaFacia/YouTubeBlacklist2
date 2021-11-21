@@ -24,7 +24,6 @@
 		{
 			"matches" : ["https://www.youtube.com/*"],
 			"js": [
-				"Suggestions.js",
 				"Parsing.js",
 				"ExtensionElements.js",
 				"script.js"
