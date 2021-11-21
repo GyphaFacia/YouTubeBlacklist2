@@ -33,8 +33,22 @@ function getSelectorsFromPageType(pageType){
 	return json[pageType]
 }
 
+function setStoreIsUpdated(boolean){
+	boolean = boolean ? window.location.href : ''
+	localStorage.setItem('isStoreUpdated', boolean)
+}
+
+function isStoreUpdated(){
+	return localStorage.getItem('isStoreUpdated')
+}
+
 class Blacklist{
 	storageKey(){return 'BlacklistLocalStorageKey'}
+	
+	update(){
+        this.content = JSON.parse(localStorage.getItem(this.storageKey()))
+        menu.updateMenu()
+	}
 	
 	constructor(){
         this.content = {}
@@ -54,6 +68,7 @@ class Blacklist{
         localStorage.setItem(this.storageKey(), JSON.stringify(this.content))
         this.content = newStore
         menu.updateMenu()
+		setStoreIsUpdated(true)
     }
     
     removeFromList(key){
@@ -61,6 +76,8 @@ class Blacklist{
         delete newStore[key]
         this.content = newStore
         localStorage.setItem(this.storageKey(), JSON.stringify(this.content))
+		menu.updateMenu()
+		setStoreIsUpdated(true)
     }
 	
 	has(key){

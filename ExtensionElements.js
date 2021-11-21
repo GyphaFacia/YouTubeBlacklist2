@@ -324,7 +324,6 @@ class ExtensionMenu extends ExtensionElement{
 		for(let button of document.querySelectorAll('.banned-channel__button')){
 			button.onclick = ()=>{
 				banlist.removeFromList(button.parentNode.children[0].innerText)
-				this.updateMenu()
 			}
 		}
 	}
@@ -352,7 +351,6 @@ class ExtensionMenu extends ExtensionElement{
 			button.onclick = ()=>{
 				let link = button.parentNode.children[0].href
 				suggestions.removeFromList(link)
-				this.updateMenu()
 			}
 		}
 	}

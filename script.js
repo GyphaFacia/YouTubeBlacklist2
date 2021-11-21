@@ -7,6 +7,8 @@ let menu = new ExtensionMenu()
 let logo = new ExtensionLogo()
 let banbutton = new BanButton()
 
+setStoreIsUpdated(false)
+
 setInterval(()=>{
 	for(let thumbnail of document.querySelectorAll("#dismissible")){
 		thumbnail.oncontextmenu = (e)=>{
@@ -32,6 +34,15 @@ setInterval(()=>{
 			vid.DOM.style.position = 'absolute'
 			removedVideos.add(vid)
 		}
+	}
+	
+	console.log(isStoreUpdated(), isStoreUpdated() != window.location.href);
+	if(isStoreUpdated() && isStoreUpdated() != window.location.href){
+		setTimeout(()=>{
+			setStoreIsUpdated(false)
+		}, 255)
+		banlist.update()
+		suggestions.update()
 	}
     
     if(removedVideos.updated){
