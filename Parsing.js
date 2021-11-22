@@ -33,57 +33,66 @@ function getSelectorsFromPageType(pageType){
 	return json[pageType]
 }
 
-class ChannelBlacklist {
+function setStoreIsUpdated(boolean){
+	boolean = boolean ? window.location.href : ''
+	localStorage.setItem('isStoreUpdated', boolean)
+}
+
+function isStoreUpdated(){
+	return localStorage.getItem('isStoreUpdated')
+}
+
+class Blacklist{
+	storageKey(){return 'BlacklistLocalStorageKey'}
+	
+	update(){
+        this.content = JSON.parse(localStorage.getItem(this.storageKey()))
+        menu.updateMenu()
+	}
+	
 	constructor(){
-		this.key = 'CHANNELS_BLACKLIST'
-		this.content = {}
-		this.loadList()
-	}
+        this.content = {}
+        let store = localStorage.getItem(this.storageKey())
+        if(!store){
+            localStorage.setItem(this.storageKey(), JSON.stringify(this.content))
+        }
+        else{
+            this.content = JSON.parse(store);
+        }
+    }
 	
-	banChannel(name, link){
-		this.content[name] = link
-		this.saveList()
-	}
+	addToList(key, val){
+        this.content[key] = val
+        
+        let newStore = {...this.content, ...JSON.parse(localStorage.getItem(this.storageKey()))}
+        localStorage.setItem(this.storageKey(), JSON.stringify(this.content))
+        this.content = newStore
+        menu.updateMenu()
+		setStoreIsUpdated(true)
+    }
+    
+    removeFromList(key){
+        let newStore = JSON.parse(localStorage.getItem(this.storageKey()))
+        delete newStore[key]
+        this.content = newStore
+        localStorage.setItem(this.storageKey(), JSON.stringify(this.content))
+		menu.updateMenu()
+		setStoreIsUpdated(true)
+    }
 	
-	unbanChannel(name){
-		delete this.content[name]
-		this.saveList()
+	has(key){
+		let store = {...this.content, ...JSON.parse(localStorage.getItem(this.storageKey()))}
+		this.content = store
+		return (key in this.content)
 	}
-	
-	getBannedNames(){
-		let names = []
-		for(name in this.content){
-			names.push(name)
-		}
-		return names
-	}
-	
-	getBannedLinks(){
-		let links = []
-		for(link of this.content){
-			links.push(link)
-		}
-		return links
-	}
-	
-	has(name){
-		return (name in this.content)
-	}
-	
-	loadList(){
-		this.content = {}
-		chrome.storage.local.get([this.key], (data)=>{
-			this.content = data[this.key]
-            this.content = this.content ? this.content : {}
-		})
-	}
-	
-	saveList(){
-		chrome.storage.local.set({[this.key] : this.content})
-		if(menu.isRendered()){
-			menu.updateMenu()
-		}
-	}
+}
+
+class Suggestions extends Blacklist{
+	storageKey(){return 'suggestions'}
+}
+
+class ChannelBlacklist extends Blacklist{
+	storageKey(){return 'blacklist'}
 }
 
 class VideosSet {

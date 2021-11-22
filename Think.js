@@ -7,6 +7,8 @@ let menu = new ExtensionMenu()
 let logo = new ExtensionLogo()
 let banbutton = new BanButton()
 
+setStoreIsUpdated(false)
+
 setInterval(()=>{
 	for(let thumbnail of document.querySelectorAll("#dismissible")){
 		thumbnail.oncontextmenu = (e)=>{
@@ -14,7 +16,7 @@ setInterval(()=>{
 			let name = thumbnail.querySelector('#video-title').innerText
 			
 			if(	confirm(`Do you want to hide \n${name}\nvideo from suggestions ?`) ){
-				suggestions.addVideo(link, name)
+				suggestions.addToList(link, name)
 				e.preventDefault()
 			}
 		}
@@ -32,6 +34,14 @@ setInterval(()=>{
 			vid.DOM.style.position = 'absolute'
 			removedVideos.add(vid)
 		}
+	}
+	
+	if(isStoreUpdated() && isStoreUpdated() != window.location.href){
+		setTimeout(()=>{
+			setStoreIsUpdated(false)
+		}, 255)
+		banlist.update()
+		suggestions.update()
 	}
     
     if(removedVideos.updated){

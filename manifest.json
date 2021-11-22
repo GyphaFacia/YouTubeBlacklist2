@@ -24,10 +24,10 @@
 		{
 			"matches" : ["https://www.youtube.com/*"],
 			"js": [
-				"Suggestions.js",
 				"Parsing.js",
 				"ExtensionElements.js",
-				"script.js"
+				"ExtensionMenu.js",
+				"Think.js"
 			],
 			"run_at" : "document_idle"
 		},
