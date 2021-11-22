@@ -45,12 +45,19 @@ class ExtensionMenu extends ExtensionElement{
 		let switchers = document.querySelectorAll('.menu-switchers__switcher')
 		let tabs = document.querySelectorAll('.menu-tabs__tab')
 		for (let i = 0; i < switchers.length; i++) {
-			switchers[i].onclick = ()=>{
+			switchers[i].onclick = switchers[i].onmouseenter = ()=>{
 				this.deactivateTabs()
 				switchers[i].classList.add('active')
 				tabs[i].classList.remove('hidden')
 				this.activeTab = i
 			}
+		}
+	}
+	
+	hookMenuBlur(){
+		let menu = document.querySelector('.ytbl-extension-menu')
+		menu.onmouseleave = ()=>{
+			menu.classList.add('hidden')
 		}
 	}
 	
@@ -196,7 +203,6 @@ class ExtensionMenu extends ExtensionElement{
 	    </div>
 		`
 	}
-	// <input type="file" name="" value="">
 	
 	hookTabAbout(){
 		let data = {}
@@ -275,7 +281,8 @@ class ExtensionMenu extends ExtensionElement{
         </div>
 		`
 		
-		this.hookTabSwitchers()		
+		this.hookTabSwitchers()
+		this.hookMenuBlur()
 		this.hookTabBlacklist()
 		this.hookTabSuggestions()
 		this.hookTabSettings()

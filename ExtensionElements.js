@@ -173,6 +173,12 @@ class ExtensionLogo extends ExtensionElement{
 				menu.DOM.classList.toggle('hidden')
 			}
 		}
+		
+		this.DOM.onmouseenter = ()=>{
+			if(menu && menu.isRendered() && menu.DOM.classList.contains('hidden')){
+				menu.DOM.classList.toggle('hidden')
+			}
+		}
 	}
 	
 }
