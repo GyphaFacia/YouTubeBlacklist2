@@ -10,14 +10,11 @@
 	},
 
 	"permissions": [
-		"storage",
-		"tabs", 
 		"<all_urls>"
 	],
 	
 	"web_accessible_resources": [
-		"icons/*.svg",
-		"icons/*.png"
+		"icons/*.svg"
 	],
 	
 	"content_scripts":[
