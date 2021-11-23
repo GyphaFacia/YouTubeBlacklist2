@@ -8,10 +8,6 @@
 		"48": "icons/ico48.png",
 		"16": "icons/ico16.png"
 	},
-
-	"permissions": [
-		"<all_urls>"
-	],
 	
 	"web_accessible_resources": [
 		"icons/*.svg"
