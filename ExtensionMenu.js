@@ -61,6 +61,18 @@ class ExtensionMenu extends ExtensionElement{
 		}
 	}
 	
+	handleLightTheme(){
+		let style = document.querySelector("body > ytd-app")
+		if(style){
+			style = window.getComputedStyle(style).getPropertyValue("background-color")
+			style = parseFloat(style.split(',')[1])
+			console.log(style);
+			if(style > 50){
+				this.DOM.classList.add('inverted')
+			}
+		}
+	}
+	
 	////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////Blacklist//////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////
@@ -281,6 +293,7 @@ class ExtensionMenu extends ExtensionElement{
         </div>
 		`
 		
+		this.handleLightTheme()
 		this.hookTabSwitchers()
 		this.hookMenuBlur()
 		this.hookTabBlacklist()

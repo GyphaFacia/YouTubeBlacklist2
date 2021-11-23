@@ -163,7 +163,19 @@ class ExtensionLogo extends ExtensionElement{
 	getNextSiblingSelector(){return '#container #buttons > ytd-button-renderer'}
 	first(){
 		this.tag = 'img'
-		this.className = 'ytbl-extension-logo'
+		this.className = 'ytbl-extension-logo inverted'
+	}
+	
+	handleLightTheme(){
+		let style = document.querySelector("body > ytd-app")
+		if(style){
+			style = window.getComputedStyle(style).getPropertyValue("background-color")
+			style = parseFloat(style.split(',')[1])
+			console.log(style);
+			if(style > 50){
+				this.DOM.classList.remove('inverted')
+			}
+		}
 	}
 	
 	onRender(){
@@ -179,6 +191,8 @@ class ExtensionLogo extends ExtensionElement{
 				menu.DOM.classList.toggle('hidden')
 			}
 		}
+		
+		this.handleLightTheme()
 	}
 	
 }
