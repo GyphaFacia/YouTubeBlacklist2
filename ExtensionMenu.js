@@ -66,7 +66,6 @@ class ExtensionMenu extends ExtensionElement{
 		if(style){
 			style = window.getComputedStyle(style).getPropertyValue("background-color")
 			style = parseFloat(style.split(',')[1])
-			console.log(style);
 			if(style > 50){
 				this.DOM.classList.add('inverted')
 			}

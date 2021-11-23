@@ -171,7 +171,6 @@ class ExtensionLogo extends ExtensionElement{
 		if(style){
 			style = window.getComputedStyle(style).getPropertyValue("background-color")
 			style = parseFloat(style.split(',')[1])
-			console.log(style);
 			if(style > 50){
 				this.DOM.classList.remove('inverted')
 			}
@@ -211,7 +210,9 @@ class ExtensionLogo extends ExtensionElement{
 // 8888888P"  "Y888888 888  888 8888888P"   "Y888 888  888 
 class BanButton extends ExtensionElement {
     getNextSiblingSelector(){
-        return '#top-row #subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button'
+		// return '#top-row #subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button'
+        return '#top-row #subscribe-button tp-yt-paper-button'
+		// document.querySelector("#button")
     }
     first(){
         this.tag = 'button'
