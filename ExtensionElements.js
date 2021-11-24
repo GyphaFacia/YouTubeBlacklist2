@@ -163,22 +163,40 @@ class ExtensionLogo extends ExtensionElement{
 	getNextSiblingSelector(){return '#container #buttons > ytd-button-renderer'}
 	first(){
 		this.tag = 'img'
-		this.className = 'ytbl-extension-logo'
+		this.className = 'ytbl-extension-logo inverted'
+	}
+	
+	handleLightTheme(){
+		let style = document.querySelector("body > ytd-app")
+		if(style){
+			style = window.getComputedStyle(style).getPropertyValue("background-color")
+			style = parseFloat(style.split(',')[1])
+			if(style > 50){
+				this.DOM.classList.remove('inverted')
+			}
+		}
 	}
 	
 	onRender(){
 		this.DOM.src = chrome.extension.getURL("icons/ChortOutline.svg")
 		this.DOM.onclick = ()=>{
 			if(menu && menu.isRendered()){
-				menu.DOM.classList.toggle('hidden')
+				if(menu.DOM.classList.contains('hidden')){
+					menu.showMenu()
+				}
+				else{
+					menu.hideMenu()
+				}
 			}
 		}
 		
 		this.DOM.onmouseenter = ()=>{
 			if(menu && menu.isRendered() && menu.DOM.classList.contains('hidden')){
-				menu.DOM.classList.toggle('hidden')
+				menu.showMenu()
 			}
 		}
+		
+		this.handleLightTheme()
 	}
 	
 }
@@ -197,7 +215,9 @@ class ExtensionLogo extends ExtensionElement{
 // 8888888P"  "Y888888 888  888 8888888P"   "Y888 888  888 
 class BanButton extends ExtensionElement {
     getNextSiblingSelector(){
-        return '#top-row #subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button'
+		// return '#top-row #subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button'
+        return '#top-row #subscribe-button tp-yt-paper-button'
+		// document.querySelector("#button")
     }
     first(){
         this.tag = 'button'

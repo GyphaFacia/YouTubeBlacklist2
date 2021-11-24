@@ -27,12 +27,10 @@ $default-transition-duration : 100ms;
         margin-right: 8px;
         padding: 8px;
         transition-duration: $default-transition-duration;
-        filter: invert(1);
         transform: translateY(2px);
         
         &:hover{
             transform: translateY(1px) scale(1.25);
-            filter: invert(1) drop-shadow(0 0 3px white);
         }
     }
     
@@ -44,6 +42,9 @@ $default-transition-duration : 100ms;
         border: 1px solid $clr-extension-border;
         border-top: none;
         border-radius: 0 0 0 5px;
+        
+        clip: rect(0, auto, 75vh, auto);
+        transition-duration: 333ms;
     }
     
     &-banbutton{
@@ -64,7 +65,7 @@ $default-transition-duration : 100ms;
     }
 }
 
-.menu{
+.menu{    
     &-tabs{
         padding: 10px;
         &__tab{
@@ -90,7 +91,7 @@ $default-transition-duration : 100ms;
         margin-top: 15px;
         &__switcher{
             font-size: 12px;
-            padding: 3px;
+            padding: 5px;
             border-radius: 2px;
             background-color: $clr-extension-button;
             color: white;
@@ -136,6 +137,7 @@ $default-transition-duration : 100ms;
     }
     
     & > *{
+        font-family: Roboto, Arial, sans-serif;
         box-sizing: border-box;
         background: none;
         border-radius: 3px;
@@ -199,7 +201,12 @@ $default-transition-duration : 100ms;
 .hidden{
     display: none;
 }
-
+.fade{
+    clip: rect(0, auto, 0, auto);
+}
+.inverted{
+    filter: invert(1);
+}
 
 
 

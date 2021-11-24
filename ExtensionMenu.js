@@ -10,7 +10,7 @@ class ExtensionMenu extends ExtensionElement{
 	getNextSiblingSelector(){return '#container #buttons > ytd-button-renderer'}
 	first(){
 		this.tag = 'aside'
-		this.className = 'ytbl-extension-menu hidden'
+		this.className = 'ytbl-extension-menu hidden fade'
 		this.activeTab = 0
 		this.loadOptions()
 	}
@@ -57,8 +57,35 @@ class ExtensionMenu extends ExtensionElement{
 	hookMenuBlur(){
 		let menu = document.querySelector('.ytbl-extension-menu')
 		menu.onmouseleave = ()=>{
-			menu.classList.add('hidden')
+			this.hideMenu()
 		}
+	}
+	
+	handleLightTheme(){
+		let style = document.querySelector("body > ytd-app")
+		if(style){
+			style = window.getComputedStyle(style).getPropertyValue("background-color")
+			style = parseFloat(style.split(',')[1])
+			if(style > 50){
+				this.DOM.classList.add('inverted')
+			}
+		}
+	}
+	
+	hideMenu(){
+		let transitionDuration = parseFloat(getComputedStyle(this.DOM).transitionDuration)*1000
+		
+		this.DOM.classList.add('fade')
+	    setTimeout(()=>{
+	        this.DOM.classList.add('hidden')
+	    }, transitionDuration)
+	}
+	
+	showMenu(){
+		menu.DOM.classList.remove('hidden')
+		setTimeout(()=>{
+			menu.DOM.classList.remove('fade')
+		}, 0)
 	}
 	
 	////////////////////////////////////////////////////////////////////////////
@@ -281,6 +308,7 @@ class ExtensionMenu extends ExtensionElement{
         </div>
 		`
 		
+		this.handleLightTheme()
 		this.hookTabSwitchers()
 		this.hookMenuBlur()
 		this.hookTabBlacklist()
@@ -292,9 +320,11 @@ class ExtensionMenu extends ExtensionElement{
 		
 		if(startHidden){
 			this.DOM.classList.add('hidden')
+			this.DOM.classList.add('fade')
 		}
 		else{
 			this.DOM.classList.remove('hidden')
+			this.DOM.classList.remove('fade')
 		}
 	}
 }
