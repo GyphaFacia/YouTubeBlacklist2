@@ -30,9 +30,18 @@ setInterval(()=>{
 		
 		let vidShallBeRemoved = isChannelBlacklisted || isVideoSeen || videoHiddenFromSuggestions
 		if(vidShallBeRemoved){
-			vid.DOM.innerHTML = ''
+			// vid.oldHTML = vid.DOM.innerHTML
+			// vid.DOM.innerHTML = ''
 			vid.DOM.style.position = 'absolute'
+			vid.DOM.style.tranform = 'translateY(-200vh)'
+			vid.DOM.style.display = 'none'
 			removedVideos.add(vid)
+		}
+		else if (vid.DOM.style.position == 'absolute') {
+			// vid.DOM.innerHTML = vid.oldHTML
+			vid.DOM.style.position = 'static'
+			vid.DOM.style.tranform = 'none'
+			vid.DOM.style.display = 'block'
 		}
 	}
 	
@@ -51,10 +60,6 @@ setInterval(()=>{
 }, 255)
 
 
-// let banCounter = new BanCounter('#center')
-// let logo = new ExtensionLogo('#buttons > ytd-button-renderer')
-// let menu = new ExtensionMenu('#end')
-// let banButton = new BanButton('#top-row #subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button')
 
 
 
