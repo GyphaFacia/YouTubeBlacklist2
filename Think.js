@@ -24,8 +24,13 @@ setInterval(()=>{
 	
 	for(let vid of parseAllVideos()){
 		if(vidShallBeRemoved(vid)){
-			vid.DOM.classList.add('banned')
-			vid.DOM.innerHTML = ''
+			if(vidShallBeBlured()){
+				vid.DOM.classList.add('video-blured')
+			}
+			else{
+				vid.DOM.classList.add('video-removed')
+			}
+			// vid.DOM.innerHTML = ''
 			removedVideos.add(vid)
 		}
 	}

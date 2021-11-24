@@ -207,15 +207,31 @@ $default-transition-duration : 100ms;
 .inverted{
     filter: invert(1);
 }
-.banned{
-    position: absolute;
-    border: 5px solid red;
-    display: none;
-    // opacity: 0;
-    width: 0;
-    height: 0;
-    margin: 0;
-    padding: 0;
+.video-removed{
+    &, & *{
+        position: absolute;
+        display: none;
+        width: 0;
+        height: 0;
+        margin: 0;
+        padding: 0;
+    }
+}
+.video-blured{
+    transition-duration: 255ms;
+    filter: invert(1) grayscale(1) contrast(0.5) opacity(0.25);
+    
+    & img{
+        filter: blur(5px);
+    }
+    
+    & *{
+        text-decoration: line-through;
+    }
+    
+    &:hover, &:hover img{
+        filter: none;
+    }
 }
 
 

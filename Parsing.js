@@ -42,6 +42,11 @@ function vidShallBeRemoved(vid){
 	return isChannelBlacklisted || isVideoSeen || videoHiddenFromSuggestions
 }
 
+function vidShallBeBlured(){
+	let pageIsFeed = window.location.href == 'https://www.youtube.com/'
+	return pageIsFeed
+}
+
 function setStoreIsUpdated(boolean){
 	boolean = boolean ? window.location.href : ''
 	localStorage.setItem('isStoreUpdated', boolean)

@@ -7,7 +7,7 @@
 // 888   "   888 Y8b.     888  888 Y88b 888 
 // 888       888  "Y8888  888  888  "Y88888 
 class ExtensionMenu extends ExtensionElement{
-	getNextSiblingSelector(){return '#container #buttons > ytd-button-renderer'}
+	getNextSiblingSelector(){return '#container #buttons'}
 	first(){
 		this.tag = 'aside'
 		this.className = 'ytbl-extension-menu hidden fade'
