@@ -181,13 +181,18 @@ class ExtensionLogo extends ExtensionElement{
 		this.DOM.src = chrome.extension.getURL("icons/ChortOutline.svg")
 		this.DOM.onclick = ()=>{
 			if(menu && menu.isRendered()){
-				menu.DOM.classList.toggle('hidden')
+				if(menu.DOM.classList.contains('hidden')){
+					menu.showMenu()
+				}
+				else{
+					menu.hideMenu()
+				}
 			}
 		}
 		
 		this.DOM.onmouseenter = ()=>{
 			if(menu && menu.isRendered() && menu.DOM.classList.contains('hidden')){
-				menu.DOM.classList.toggle('hidden')
+				menu.showMenu()
 			}
 		}
 		

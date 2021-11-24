@@ -42,6 +42,9 @@ $default-transition-duration : 100ms;
         border: 1px solid $clr-extension-border;
         border-top: none;
         border-radius: 0 0 0 5px;
+        
+        clip: rect(0, auto, 75vh, auto);
+        transition-duration: 333ms;
     }
     
     &-banbutton{
@@ -62,7 +65,7 @@ $default-transition-duration : 100ms;
     }
 }
 
-.menu{
+.menu{    
     &-tabs{
         padding: 10px;
         &__tab{
@@ -197,6 +200,9 @@ $default-transition-duration : 100ms;
 }
 .hidden{
     display: none;
+}
+.fade{
+    clip: rect(0, auto, 0, auto);
 }
 .inverted{
     filter: invert(1);
