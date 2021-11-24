@@ -33,6 +33,15 @@ function getSelectorsFromPageType(pageType){
 	return json[pageType]
 }
 
+function vidShallBeRemoved(vid){
+	let pageIsHistory = window.location.href.includes('/history')
+	let isChannelBlacklisted = banlist.has(vid.channelName) && menu.options['HideBanned']
+	let isVideoSeen = vid.progress && menu.options['HideWatched'] && !pageIsHistory
+	let videoHiddenFromSuggestions = (vid.videoHref in suggestions.content) && menu.options['HideSuggested']
+	
+	return isChannelBlacklisted || isVideoSeen || videoHiddenFromSuggestions
+}
+
 function setStoreIsUpdated(boolean){
 	boolean = boolean ? window.location.href : ''
 	localStorage.setItem('isStoreUpdated', boolean)
@@ -102,6 +111,16 @@ class VideosSet {
 		this.updated = false
 	}
 	
+	remove(searchvid){
+		for (var i = 0; i < this.content.length; i++) {
+			let vid = this.content[i]
+			if(searchvid[this.key] == vid[this.key]){
+				this.content[i] = this.content.pop()
+				break
+			}
+		}
+	}
+	
 	add(newvid){
 		if( ! this.has(newvid) ){
 			this.content.push(newvid)
@@ -139,6 +158,7 @@ function parseAllVideos(){
 				videoHref: domElt.querySelector(selectors.videoHref).href,
 				channelName : domElt.querySelector(selectors.channelName).innerText,
 				channelHref : pageType != 'watch' ? domElt.querySelector(selectors.channelHref).href : '',
+				oldParent: domElt.parentNode,
 				DOM: domElt,
 			})
 		}catch(e){}

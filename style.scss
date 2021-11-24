@@ -207,7 +207,16 @@ $default-transition-duration : 100ms;
 .inverted{
     filter: invert(1);
 }
-
+.banned{
+    position: absolute;
+    border: 5px solid red;
+    display: none;
+    // opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+}
 
 
 
