@@ -59,6 +59,9 @@ class ExtensionMenu extends ExtensionElement{
 		menu.onmouseleave = ()=>{
 			this.hideMenu()
 		}
+		menu.onmouseenter = ()=>{
+			clearTimeout(this.hideTimeout)
+		}
 	}
 	
 	handleLightTheme(){
@@ -86,12 +89,16 @@ class ExtensionMenu extends ExtensionElement{
 		setTimeout(()=>{
 			menu.DOM.classList.remove('fade')
 		}, 0)
+		
+		this.hideTimeout = setTimeout(()=>{
+			this.hideMenu()
+		}, 2000)
 	}
 	
 	////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////Blacklist//////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////
-	getTabBlacklistCode(){
+	getTabHiddenChannelsCode(){
 		let code = ''
 		for(let channel in banlist.content){
 			code += `
@@ -104,7 +111,7 @@ class ExtensionMenu extends ExtensionElement{
 		return code
 	}
 	
-	hookTabBlacklist(){
+	hookTabHiddenChannels(){
 		for(let button of document.querySelectorAll('.banned-channel__button')){
 			button.onclick = ()=>{
 				banlist.removeFromList(button.parentNode.children[0].innerText)
@@ -115,7 +122,7 @@ class ExtensionMenu extends ExtensionElement{
 	////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////Suggestions///////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////
-	getTabSuggestionsCode(){
+	getTabHiddenVideosCode(){
 		let code = ''
 		for(let link in suggestions.content){
 			let title = suggestions.content[link]
@@ -130,7 +137,7 @@ class ExtensionMenu extends ExtensionElement{
 		return code
 	}
 	
-	hookTabSuggestions(){
+	hookTabHiddenVideos(){
 		for(let button of document.querySelectorAll('.banned-video__button')){
 			button.onclick = ()=>{
 				let link = button.parentNode.children[0].href
@@ -294,15 +301,15 @@ class ExtensionMenu extends ExtensionElement{
 	updateMenu(startHidden = false){
 		this.innerHTML = `
 		<div class="menu-switchers">
-			<div class="menu-switchers__switcher active">Black List</div>
-			<div class="menu-switchers__switcher">Suggestions</div>
+			<div class="menu-switchers__switcher active">HiddenChannels</div>
+			<div class="menu-switchers__switcher">HiddenVideos</div>
 			<div class="menu-switchers__switcher">Settings</div>
-			<div class="menu-switchers__switcher">About</div>
+			<div class="menu-switchers__switcher">Extra</div>
 		</div>
 		
 		<div class="menu-tabs">
-            <div class="menu-tabs__tab">${this.getTabBlacklistCode()}</div>
-			<div class="menu-tabs__tab hidden">${this.getTabSuggestionsCode()}</div>
+            <div class="menu-tabs__tab">${this.getTabHiddenChannelsCode()}</div>
+			<div class="menu-tabs__tab hidden">${this.getTabHiddenVideosCode()}</div>
             <div class="menu-tabs__tab hidden">${this.getTabSettingsCode()}</div>
             <div class="menu-tabs__tab hidden">${this.getTabAboutCode()}</div>
         </div>
@@ -311,20 +318,18 @@ class ExtensionMenu extends ExtensionElement{
 		this.handleLightTheme()
 		this.hookTabSwitchers()
 		this.hookMenuBlur()
-		this.hookTabBlacklist()
-		this.hookTabSuggestions()
+		this.hookTabHiddenChannels()
+		this.hookTabHiddenVideos()
 		this.hookTabSettings()
 		this.hookTabAbout()
 		
 		this.restoreActiveTab()
 		
 		if(startHidden){
-			this.DOM.classList.add('hidden')
-			this.DOM.classList.add('fade')
+			this.hideMenu()
 		}
 		else{
-			this.DOM.classList.remove('hidden')
-			this.DOM.classList.remove('fade')
+			this.showMenu()
 		}
 	}
 }

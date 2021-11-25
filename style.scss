@@ -222,7 +222,7 @@ $default-transition-duration : 100ms;
     filter: invert(1) grayscale(1) contrast(0.5) opacity(0.25);
     
     & img{
-        filter: blur(5px);
+        filter: invert(0.5);
     }
     
     & *{
