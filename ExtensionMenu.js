@@ -326,9 +326,13 @@ class ExtensionMenu extends ExtensionElement{
 		this.restoreActiveTab()
 		
 		if(startHidden){
-			this.hideMenu()
+			// this.hideMenu()
+			this.DOM.classList.add('fade')
+			this.DOM.classList.add('hidden')
 		}
 		else{
+			this.DOM.classList.remove('fade')
+			this.DOM.classList.remove('hidden')
 			this.showMenu()
 		}
 	}
