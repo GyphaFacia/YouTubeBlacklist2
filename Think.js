@@ -23,15 +23,14 @@ setInterval(()=>{
 	}
 	
 	for(let vid of parseAllVideos()){
-		let pageIsHistory = window.location.href.includes('/history')
-		let isChannelBlacklisted = banlist.has(vid.channelName) && menu.options['HideBanned']
-		let isVideoSeen = vid.progress && menu.options['HideWatched'] && !pageIsHistory
-		let videoHiddenFromSuggestions = (vid.videoHref in suggestions.content) && menu.options['HideSuggested']
-		
-		let vidShallBeRemoved = isChannelBlacklisted || isVideoSeen || videoHiddenFromSuggestions
-		if(vidShallBeRemoved){
-			vid.DOM.innerHTML = ''
-			vid.DOM.style.position = 'absolute'
+		if(vidShallBeRemoved(vid)){
+			if(vidShallBeBlured()){
+				vid.DOM.classList.add('video-blured')
+			}
+			else{
+				vid.DOM.classList.add('video-removed')
+			}
+			// vid.DOM.innerHTML = ''
 			removedVideos.add(vid)
 		}
 	}
@@ -39,7 +38,7 @@ setInterval(()=>{
 	if(isStoreUpdated() && isStoreUpdated() != window.location.href){
 		setTimeout(()=>{
 			setStoreIsUpdated(false)
-		}, 255)
+		}, 500)
 		banlist.update()
 		suggestions.update()
 	}
@@ -48,13 +47,9 @@ setInterval(()=>{
         removedVideos.updated = false
         banCounter.cnt = removedVideos.content.length
     }
-}, 255)
+}, 500)
 
 
-// let banCounter = new BanCounter('#center')
-// let logo = new ExtensionLogo('#buttons > ytd-button-renderer')
-// let menu = new ExtensionMenu('#end')
-// let banButton = new BanButton('#top-row #subscribe-button > ytd-subscribe-button-renderer > tp-yt-paper-button')
 
 
 

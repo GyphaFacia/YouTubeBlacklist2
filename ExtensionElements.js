@@ -160,7 +160,7 @@ class BanCounter extends ExtensionElement{
 //                   "Y88P"           
 
 class ExtensionLogo extends ExtensionElement{
-	getNextSiblingSelector(){return '#container #buttons > ytd-button-renderer'}
+	getNextSiblingSelector(){return '#container #buttons'}
 	first(){
 		this.tag = 'img'
 		this.className = 'ytbl-extension-logo inverted'
